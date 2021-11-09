@@ -1,6 +1,11 @@
 import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
+  :root{
+    --primary: #1C313D;
+    --secondary: #AA2C2C;
+  }
+
   body {
     margin: 0;
     font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
