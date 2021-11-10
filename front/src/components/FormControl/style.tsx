@@ -8,3 +8,13 @@ export const StyledFormControl = styled.div<FormControl>`
   width: ${props => props.width === "half" ? '48%' : '100%'};
   margin-bottom: 2em;
 `;
+
+export const StyledLabel = styled.label`
+  display: inline-block;
+  width: 100%;
+  margin-bottom: .2em;
+
+  font-size: .9em;
+  font-weight: 500;
+  text-align: left;
+`

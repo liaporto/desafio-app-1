@@ -1,15 +1,18 @@
 import React from 'react'
 
-import {StyledFormControl} from './style'
+import {StyledFormControl, StyledLabel} from './style'
 
 interface FormControlProps {
-  children?: any | undefined
-  controlWidth?: string
+  children: any | undefined;
+  inputLabel?: string;
+  htmlFor?: string;
+  controlWidth?: string;
 }
 
-const FormControl = ({children, controlWidth}:FormControlProps) => {
+const FormControl = ({children, inputLabel, htmlFor, controlWidth}:FormControlProps) => {
   return (
     <StyledFormControl width={controlWidth}>
+      {inputLabel && <StyledLabel htmlFor={htmlFor}>{inputLabel}</StyledLabel>}
       {children}
     </StyledFormControl>
   )

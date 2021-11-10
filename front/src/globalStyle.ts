@@ -4,6 +4,19 @@ export default createGlobalStyle`
   :root{
     --primary: #1C313D;
     --secondary: #AA2C2C;
+    
+    --light-gray: #d5d5d5;
+    --mid-gray: #AFAFAF;
+    --dark-gray: #656565;
+
+    --off-white: #F4F4F4;
+    --white: #ffffff;
+  }
+
+  *,
+  *::before,
+  *::after{
+    box-sizing: border-box;
   }
 
   body {
@@ -14,7 +27,7 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     
-    background-color: #F4F4F4;
+    background-color: var(--off-white);
   }
 
   code {
@@ -32,7 +45,7 @@ export default createGlobalStyle`
   }
 
   h2{
-    font-size: 1.3em;
+    font-size: 1.5em;
     font-weight: 400;
   }
 

@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 
-
+import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
 import TextInput from '../../components/TextInput';
+import Select from '../../components/Select';
 import Button from '../../components/Button';
+
+import {StyledRegisterForm} from './style';
 
 interface FormData {
   cpf: string,
@@ -248,11 +251,9 @@ const Register = ({submitData}:FormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <fieldset>
-        <legend>Dados pessoais:</legend>
-        <FormControl controlWidth="half">
-          <label htmlFor="cpf">CPF*</label>
+    <StyledRegisterForm onSubmit={handleSubmit(onSubmit)}>
+      <Fieldset legend="Dados pessoais">
+        <FormControl inputLabel="CPF*" htmlFor="cpf" controlWidth="half">
           <TextInput
             id="cpf"
             type="text"
@@ -266,8 +267,7 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.cpf && <span>{errors.cpf.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="pis">PIS*</label>
+        <FormControl inputLabel="PIS*" htmlFor="pis" controlWidth="half">
           <TextInput
             id="pis"
             type="text"
@@ -281,8 +281,7 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.pis && <span>{errors.pis.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="name">Primeiro nome*</label>
+        <FormControl inputLabel="Primeiro nome*" htmlFor="name" controlWidth="half">
           <TextInput
             id="name"
             type="text"
@@ -293,8 +292,7 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.name && <span>{errors.name.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="email">Email*</label>
+        <FormControl inputLabel="Email*" htmlFor="email" controlWidth="half">
           <TextInput
             id="email"
             type="email"
@@ -308,8 +306,7 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.email && <span>{errors.email.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="password">Senha*</label>
+        <FormControl inputLabel="Senha*" htmlFor="password" controlWidth="half">
           <TextInput
             id="password"
             type="password"
@@ -320,8 +317,7 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.password && <span>{errors.password.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="confirmPassword">Confirmar senha*</label>
+        <FormControl inputLabel="Confirmar senha*" htmlFor="confirmPassword" controlWidth="half">
           <TextInput
             id="confirmPassword"
             type="password"
@@ -337,38 +333,33 @@ const Register = ({submitData}:FormProps) => {
           />
           {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
         </FormControl>
-      </fieldset>
+      </Fieldset>
       <hr/>
-      <fieldset>
-        <legend>Endereço:</legend>
-        <FormControl controlWidth="half">
-          <label id="countryLabel" htmlFor="country">País*</label>
-          <select
+      <Fieldset legend="Endereço">
+        <FormControl inputLabel="País*" htmlFor="country" controlWidth="half">
+          <Select
             id="country"
-            {...register("country", {
+            selectOptions={countryOptions}
+            register = {register("country", {
               required: "País não pode ficar vazio"
             })}
-            >
-            {countryOptions.map((item, index) => <option key={index} value={item.value}>{item.label}</option>)}
-          </select>
+          />
           {errors.country && <span>{errors.country.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label id="stateLabel" htmlFor="state">Estado*</label>
-          {(watchCountry === "Brasil") ?
+        <FormControl inputLabel="Estado*" htmlFor="state" controlWidth="half">
+        {(watchCountry === "Brasil") ?
           (
-            <select
-            id="state"
-            data-testid="stateSelectInput"
-            {...register("brazilianState", {
-              required: "Estado não pode ficar vazio"
-            })}
-            >
-            {brazilianStatesOptions.map((item, index) => <option key={index} value={item.value}>{item.label}</option>)}
-          </select>
+            <Select
+              id="state"
+              testId="stateSelectInput"
+              selectOptions={brazilianStatesOptions}
+              register={register("brazilianState", {
+                required: "Estado não pode ficar vazio"
+              })}
+            />
           ) :
           (
-            <TextInput id="state" data-testid="stateTextInput" name="state" type="text" placeholder="Rio de Janeiro"
+            <TextInput id="state" data-testid="stateTextInput" name="state" type="text" placeholder=""
             defaultValue = ''
             register = {register("generalState", {
               required: "Estado não pode ficar vazio"
@@ -378,8 +369,7 @@ const Register = ({submitData}:FormProps) => {
           {errors.brazilianState && <span>{errors.brazilianState.message}</span>}
           {errors.generalState && <span>{errors.generalState.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="city">Município*</label>
+        <FormControl inputLabel="Município*" htmlFor="city" controlWidth="half">
           <TextInput id="city" name="city" type="text" placeholder="Rio de Janeiro"
               defaultValue = ''
               register = {register("city", {
@@ -388,8 +378,7 @@ const Register = ({submitData}:FormProps) => {
             />
             {errors.city && <span>{errors.city.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="postalCode">CEP*</label>
+        <FormControl inputLabel="CEP*" htmlFor="postalCode" controlWidth="half">
           <TextInput id="postalCode" name="postalCode" type="text" placeholder="22222-222"
               defaultValue = ''
               register = {register("postalCode", {
@@ -402,8 +391,7 @@ const Register = ({submitData}:FormProps) => {
             />
             {errors.postalCode && <span>{errors.postalCode.message}</span>}
         </FormControl>
-        <FormControl controlWidth="full">
-          <label htmlFor="street">Rua*</label>
+        <FormControl inputLabel="Rua*" htmlFor="street" controlWidth="full">
           <TextInput id="street" name="street" type="text" placeholder=""
               defaultValue = ''
               register = {register("street", {
@@ -412,8 +400,7 @@ const Register = ({submitData}:FormProps) => {
             />
             {errors.street && <span>{errors.street.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="number">Número*</label>
+        <FormControl inputLabel="Número*" htmlFor="number" controlWidth="half">
           <TextInput id="number" name="number" type="text" placeholder="22"
               defaultValue = ''
               register = {register("number", {
@@ -422,17 +409,16 @@ const Register = ({submitData}:FormProps) => {
             />
             {errors.number && <span>{errors.number.message}</span>}
         </FormControl>
-        <FormControl controlWidth="half">
-          <label htmlFor="additionalInfo">Complemento (opcional)</label>
+        <FormControl inputLabel="Complemento (opcional)" htmlFor="additionalInfo" controlWidth="half">
           <TextInput id="additionalInfo" name="additionalInfo" type="text" placeholder=""
               defaultValue = ''
               register = {register("additionalInfo")}
             />
             {errors.additionalInfo && <span>{errors.additionalInfo.message}</span>}
         </FormControl>
-      </fieldset>
+      </Fieldset>
       <Button type="submit" styleType="solid" mainColor="primary">Concluir cadastro</Button>
-    </form>
+    </StyledRegisterForm>
   )
 }
 

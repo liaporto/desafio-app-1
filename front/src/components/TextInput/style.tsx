@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledInput = styled.input`
-  box-sizing: border-box;
-
   height: 50px;
   width: 100%;
-  max-width: 100%;
   margin-bottom: .5em;
 
   padding-left: 1em;
