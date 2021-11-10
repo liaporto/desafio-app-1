@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@iconify/react": "^3.0.1",
     "@testing-library/dom": "^8.11.0",
     "@types/styled-components": "^5.1.15"
   }

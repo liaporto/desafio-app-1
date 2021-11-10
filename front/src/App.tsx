@@ -3,6 +3,8 @@ import Button from './components/Button';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
+import { Icon } from '@iconify/react';
+
 
 function App() {
 
@@ -34,7 +36,12 @@ function App() {
         :
         (
           <>
-            <h2>Cadastre-se</h2>
+            <div className="">
+              <Button mainColor="primary" styleType="outline" onClick={() => setCurrentScreen("login")}>
+                <Icon icon="akar-icons:arrow-left"/>
+              </Button>
+              <h2>Cadastre-se</h2>
+            </div>
             <Register submitData={postRegisterData}/>
           </>
         )

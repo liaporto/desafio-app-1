@@ -50,7 +50,8 @@ export default createGlobalStyle`
   }
 
   .main{
+    width: 40%;
+    margin: 10vh auto 0;
     text-align: center;
-    margin-top: 10vh;
   }
 `

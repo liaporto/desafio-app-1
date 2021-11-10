@@ -2,7 +2,7 @@ import React from 'react';
 import { StyledButton } from './style';
 
 interface ButtonProps {
-  children: string,
+  children: string | Array<JSX.Element> | JSX.Element,
   type?: "button" | "submit" | "reset",
   styleType?: string,
   mainColor?: string,
