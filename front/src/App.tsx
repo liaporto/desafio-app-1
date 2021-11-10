@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Button from './components/Button';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 
 function App() {
@@ -10,6 +11,10 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState("login");
 
   const postLoginData = (data:{}) => {
+    console.log(data);
+  }
+
+  const postRegisterData = (data:{}) => {
     console.log(data);
   }
 
@@ -30,7 +35,7 @@ function App() {
         (
           <>
             <h2>Cadastre-se</h2>
-            <div>placeholder</div>
+            <Register submitData={postRegisterData}/>
           </>
         )
       ) :

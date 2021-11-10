@@ -9,15 +9,14 @@ import {
 import Login from '.';
 
 describe("Login", () => {
-  let mockPost:jest.Mock;
+  const mockPost:jest.Mock = jest.fn();
 
   beforeEach(()=> {
-    mockPost = jest.fn();
+    render(<Login submitData={mockPost}/>);
   })
 
   describe("Render flow", () => {
     test("renders inputs", () => {
-      render(<Login submitData={mockPost}/>);
       
       expect(
         screen.getByPlaceholderText("E-mail, CPF ou PIS")
@@ -27,14 +26,12 @@ describe("Login", () => {
     });
 
     test("renders submit button", () => {
-      render(<Login submitData={mockPost}/>);
       expect(screen.getByText("Entrar")).toBeInTheDocument();
     });
   });
 
   describe("Submit flow", () => {
     test("form is filled correctly", () => {
-      render(<Login submitData={mockPost}/>);
 
       const loginInput = screen.getByPlaceholderText("E-mail, CPF ou PIS") as HTMLInputElement;
       const passwordInput = screen.getByPlaceholderText("Senha") as HTMLInputElement;
@@ -57,8 +54,6 @@ describe("Login", () => {
     });
 
     test("form submits correctly", async () => {
-
-      render(<Login submitData={mockPost} />);
 
       const loginInput = screen.getByPlaceholderText("E-mail, CPF ou PIS");
       const passwordInput = screen.getByPlaceholderText("Senha");
@@ -83,9 +78,6 @@ describe("Login", () => {
     });
 
     test("form shows error if login is empty", async () => {
-      const mockPost = jest.fn();
-
-      render(<Login submitData={mockPost}/>);
 
       const loginInput = screen.getByPlaceholderText("E-mail, CPF ou PIS") as HTMLInputElement;
 
@@ -101,7 +93,6 @@ describe("Login", () => {
     });
 
     test("form shows error if passoword is empty", async () => {
-      render(<Login submitData={mockPost}/>);
 
       const passwordInput = screen.getByPlaceholderText("Senha") as HTMLInputElement;
 
@@ -117,7 +108,6 @@ describe("Login", () => {
     });
 
     test("form shows error if login is in wrong pattern", async () => {
-      render(<Login submitData={mockPost}/>);
 
       const loginInput = screen.getByPlaceholderText("E-mail, CPF ou PIS");
       const passwordInput = screen.getByPlaceholderText("Senha");

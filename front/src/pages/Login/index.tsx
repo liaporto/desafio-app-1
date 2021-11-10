@@ -7,7 +7,7 @@ import FormControl from '../../components/FormControl';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 
-type FormData = {
+interface FormData {
   loginId: string,
   password: string,
 }
