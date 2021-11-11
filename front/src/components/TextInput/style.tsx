@@ -11,4 +11,9 @@ export const StyledInput = styled.input`
   border-radius: .5em;
 
   box-shadow: 0px 3px 10px rgba(132, 132, 132, 0.1);
+
+  &:disabled, &:read-only{
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+  }
 `;
