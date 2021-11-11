@@ -1,0 +1,18 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node-dev --no-notify src/app.js",
+    "migrate": "node src/database/migrate.js",
+    "seed": "node src/database/seeders/seeder.js",
+    "keys": "node src/config/generateRSAKeys.js",
+    "start": "node src/app.js"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "sequelize": "^6.9.0"
+  }
+}
