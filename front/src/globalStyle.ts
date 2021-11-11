@@ -37,16 +37,17 @@ export default createGlobalStyle`
 
   h1, h2{
     color: var(--primary);
-    margin-bottom: 1em;
   }
-
+  
   h1{
     font-size: 2.5em;
+    margin-bottom: 2em;
   }
-
+  
   h2{
     font-size: 1.5em;
     font-weight: 400;
+    margin-bottom: 1em;
   }
 
   .main{

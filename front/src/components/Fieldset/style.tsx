@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const StyledFieldset = styled.fieldset`
   width: 100%;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
   
   display: flex;
   flex-wrap: wrap;

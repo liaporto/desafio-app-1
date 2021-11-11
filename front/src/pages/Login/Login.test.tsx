@@ -8,6 +8,17 @@ import {
 
 import Login from '.';
 
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => {
+  const originalRouterDom = jest.requireActual('react-router-dom');
+  return {
+      __esModule: true,
+      ...originalRouterDom,
+      useNavigate: () => mockedNavigate
+  };
+});
+
 describe("Login", () => {
   const mockPost:jest.Mock = jest.fn();
 
