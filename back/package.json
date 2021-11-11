@@ -16,6 +16,7 @@
     "sequelize": "^6.9.0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "sqlite3": "^5.0.2"
   }
 }
