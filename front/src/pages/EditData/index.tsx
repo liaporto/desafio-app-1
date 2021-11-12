@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import { useForm } from 'react-hook-form'
+import React, {useState, useEffect} from 'react';
+import { useForm } from 'react-hook-form';
+import {useNavigate} from 'react-router-dom';
 
 import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
@@ -254,6 +255,8 @@ const brazilianStatesOptions = [
 
 const EditData = ({submitData, getUserData}:FormProps) => {
 
+  let navigate = useNavigate();
+
   const [userData, setUserData] = useState<UserData>();
 
   const { register, handleSubmit, setValue, watch, formState:{errors} } = useForm<FormData>({mode:"onChange"});
@@ -264,11 +267,13 @@ const EditData = ({submitData, getUserData}:FormProps) => {
   const onSubmit = (data:FormData) => {
     console.log(data);
     if (submitData) submitData(data);
+    window.alert("Dados alterados com sucesso!");
   }
 
-  const onDeleteUser = () => {
+  const handleDeleteUser = () => {
     if(window.confirm("Tem certeza que deseja apagar o perfil?")){
       console.log("Perfil apagado");
+      navigate("/");
     } else {
       console.log("Cancelado");
     }
@@ -305,6 +310,8 @@ const EditData = ({submitData, getUserData}:FormProps) => {
   }, [userData]);
 
   return (
+    <main>
+      <h2>Editar dados</h2>
     <StyledEditDataForm onSubmit={handleSubmit(onSubmit)}>
             <Fieldset legend="Dados pessoais">
         <FormControl inputLabel="CPF*" htmlFor="cpf" controlWidth="half">
@@ -461,10 +468,11 @@ const EditData = ({submitData, getUserData}:FormProps) => {
         </FormControl>
       </Fieldset>
       <ButtonContainer>
-        <Button width="half" styleType="outline" mainColor="secondary" onClick={onDeleteUser}>Apagar perfil</Button>
+        <Button width="half" styleType="outline" mainColor="secondary" onClick={handleDeleteUser}>Apagar perfil</Button>
         <Button type="submit" width="half" styleType="solid" mainColor="primary">Salvar edições</Button>
       </ButtonContainer>
     </StyledEditDataForm>
+    </main>
   )
 }
 

@@ -10,10 +10,23 @@ import userEvent from '@testing-library/user-event';
 
 import EditData from ".";
 
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => {
+  const originalRouterDom = jest.requireActual('react-router-dom');
+  return {
+      __esModule: true,
+      ...originalRouterDom,
+      useNavigate: () => mockedNavigate
+  };
+});
+
 describe("Edit data form", () => {
   const mockPost:jest.Mock = jest.fn();
 
   const mockConfirm = jest.spyOn(window, 'confirm').mockImplementation(() => true);
+
+  const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => true);
   
   const mockGetData:jest.Mock = jest.fn(async (userId:string) => {
     return {
@@ -37,7 +50,10 @@ describe("Edit data form", () => {
     await waitFor(() => expect(mockGetData).toReturn());
   });
 
-  afterAll(() => mockConfirm.mockRestore());
+  afterAll(() => {
+    mockConfirm.mockRestore();
+    mockAlert.mockRestore();
+  });
   
   describe("render flow", () => {
     test("async getData function is called and returns data", async () => {
@@ -298,9 +314,8 @@ describe("Edit data form", () => {
     });
 
     //TODO: Escrever teste que garanta que os campos CPF e PIS estão desabilitados
-
-    //TODO: Escrever teste para o botão de apagar perfil
     
+    //TODO: Resolver esse teste
     test("data is updated correctly", async () => {
 
       const nameInput = screen.getByRole("textbox", {name: /Nome/i}) as HTMLInputElement;
@@ -393,6 +408,14 @@ describe("Edit data form", () => {
         additionalInfo: 'Ap. 101'
       }));
     });
+
+    //TODO: Resolver esse teste, fazer rodar só depois que os dados já tiverem carregado
+    test("alert is throwed when user submits form", () => {
+      const submitButton = screen.getByText("Salvar edições");
+
+      fireEvent.click(submitButton);
+      expect(mockConfirm).toBeCalledWith("Dados alterados com sucesso!");
+    })
   });
 
   describe("delete user flow", () => {

@@ -10,6 +10,17 @@ import userEvent from '@testing-library/user-event';
 
 import Register from ".";
 
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => {
+  const originalRouterDom = jest.requireActual('react-router-dom');
+  return {
+      __esModule: true,
+      ...originalRouterDom,
+      useNavigate: () => mockedNavigate
+  };
+});
+
 describe("Register form", () => {
   let mockPost:jest.Mock = jest.fn();
 
