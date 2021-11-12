@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import {AuthContext} from '../../contexts/auth';
 
 import {StyledLoginForm, Container} from './style';
 
@@ -8,7 +10,9 @@ import FormControl from '../../components/FormControl';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 
-interface FormData {
+import {loginUser} from "../../services/UserService";
+
+interface LoginData {
   loginId: string,
   password: string,
 }
@@ -18,14 +22,22 @@ interface FormProps {
 }
 
 const Login = ({submitData}:FormProps) => {
-  const { register, handleSubmit, formState:{errors} } = useForm<FormData>({mode:"onChange"});
-
   let navigate = useNavigate();
 
-  const onSubmit = (data:FormData) => {
-    console.log(data);
-    if(submitData) submitData(data);
-    navigate("/home");
+  const Auth = useContext(AuthContext);
+  
+  const { register, handleSubmit, formState:{errors} } = useForm<LoginData>({mode:"onChange"});
+
+  const onSubmit = (data:LoginData) => {
+    loginUser(data).then(responseData => {
+      const token = responseData.token;
+      localStorage.setItem("token", token);
+      Auth.setToken("Bearer "+token);
+      navigate("/home");
+    }).catch(err => {
+      console.log(err);
+      alert("Login inválido.");
+    });
   }
 
   const handleGoToRegister = () => {

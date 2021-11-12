@@ -280,7 +280,7 @@ const Register = () => {
       navigate("/home");
     }).catch(err => {
       console.log(err);
-      alert(err);
+      alert("Ocorreu um erro. Por favor tente novamente.");
     });
   }
 
