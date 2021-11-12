@@ -1,12 +1,14 @@
 import api from '../api';
 
 const registerUser = async (data:{}) => {
-  console.log(data);
-  api.post('/register', data).then((response) => {
-    console.log(response);
-    const token = response.data.token;
-    window.alert("Cadastro feito com sucesso!");
-    return token;
+  return api.post('/register', data).then((response) => {
+    return response.data;
+  }, (err => console.log(err)));
+}
+
+const findUser = async (userId:string) => {
+  return api.get(`/users/${userId}`).then((response) => {
+    return response.data;
   }, (err => console.log(err)));
 }
 

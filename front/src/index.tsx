@@ -4,14 +4,18 @@ import GlobalStyle from './globalStyle';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import AuthProvider from './contexts/auth';
+
 import {BrowserRouter} from 'react-router-dom'
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

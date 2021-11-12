@@ -1,14 +1,52 @@
+const { Op } = require("sequelize");
 const User = require("../models/User");
 const Auth = require("../config/auth");
-const UserController = require("./UserController");
 
 const register = async (req, res) => {
   try {
-    const user = UserController.create(req, res);
+    const { password } = req.body;
+    const hashAndSalt = Auth.generatePassword(password);
+    const salt = hashAndSalt.salt;
+    const hash = hashAndSalt.hash;
+    const newUserData = {
+      cpf: req.body.cpf,
+      pis: req.body.pis,
+      name: req.body.name,
+      email: req.body.email,
+      hash: hash,
+      salt: salt,
+      country: req.body.country,
+      state: req.body.state,
+      city: req.body.city,
+      postalCode: req.body.postalCode,
+      street: req.body.street,
+      number: req.body.number,
+      additionalInfo: req.body.additionalInfo,
+    };
+
+    const isNotUnique = await User.findOne({
+      where: {
+        [Op.or]: [
+          { cpf: newUserData.cpf },
+          { pis: newUserData.pis },
+          { email: newUserData.email },
+        ],
+      },
+    });
+
+    if (isNotUnique !== null) {
+      throw new Error("Usuário já cadastrado!");
+    }
+
+    const user = await User.create(newUserData);
     const token = Auth.generateJWT(user);
-    return res.status(200).json({ user: user, token: token }); //não_necessariamente_vai_ter_q_usar_mas_eu_botei_aqui
-  } catch (e) {
-    return res.status(500).json({ err: e });
+    return res.status(201).json({
+      message: "Usuário criado com sucesso!",
+      user: user,
+      token: token,
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err });
   }
 };
 

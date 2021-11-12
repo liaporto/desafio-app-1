@@ -2,6 +2,7 @@ const UserController = require("../controllers/UserController");
 const AuthController = require("../controllers/AuthController");
 const { Router } = require("express");
 const passport = require("passport");
+const setAuthorizationHeader = require("../middlewares/token");
 
 const router = Router();
 

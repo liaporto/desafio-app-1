@@ -26,19 +26,23 @@ jest.mock('react-router-dom', () => {
 jest.mock("../../services/UserService");
 
 const mockRegisterUser = (registerUser as jest.Mock).mockResolvedValue({
-  cpf: "111.111.111-11",
-  pis: "111.1111.111-1",
-  name: "Fulano",
-  email: "email@exemplo.com",
-  hash: "fakehash",
-  salt: "fakesalt",
-  country: "Brasil",
-  state: "RJ",
-  city: "Rio das Ostras",
-  postalCode: "22222-222",
-  street: "Rua do Limoeiro",
-  number: "22",
-  additionalInfo: "Ap. 202",
+  message: "Usuário cadastrado com sucesso!",
+  user: {
+    id: 1,
+    cpf: "111.111.111-11",
+    pis: "111.1111.111-1",
+    name: "Fulano",
+    email: "email@exemplo.com",
+    hash: "fakehash",
+    salt: "fakesalt",
+    country: "Brasil",
+    state: "RJ",
+    city: "Rio das Ostras",
+    postalCode: "22222-222",
+    street: "Rua do Limoeiro",
+    number: "22",
+    additionalInfo: "Ap. 202",
+  }
 });
 
 const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => true);
@@ -416,10 +420,16 @@ describe("Register form", () => {
       });
 
       fireEvent.click(submitButton);
-      
 
-      await waitFor(() => {
-        expect(mockRegisterUser).toReturnWith({
+      await waitFor(async () => {
+        expect(mockRegisterUser).toBeCalled();
+        // expect(mockAlert).toBeCalledWith("Cadastro feito com sucesso!");
+      });
+
+      return expect(mockRegisterUser()).resolves.toBe({
+        message: "Usuário cadastrado com sucesso!",
+        user: {
+          id: 1,
           cpf: "111.111.111-11",
           pis: "111.1111.111-1",
           name: "Fulano",
@@ -433,8 +443,7 @@ describe("Register form", () => {
           street: "Rua do Limoeiro",
           number: "22",
           additionalInfo: "Ap. 202",
-        });
-        expect(mockAlert).toBeCalledWith("Cadastro feito com sucesso!");
+        }
       });
     });
   });

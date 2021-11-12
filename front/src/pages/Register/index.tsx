@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
+
+import {AuthContext} from '../../contexts/auth';
 
 import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
@@ -26,6 +28,24 @@ interface FormData {
   street: string,
   number: string,
   additionalInfo?: string
+}
+
+interface UserData {
+  id: number;
+  cpf: string;
+  pis: string;
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  country: string;
+  state: string;
+  city: string;
+  postalCode: string;
+  street: string;
+  number: string;
+  additionalInfo?: string;
+  updatedAt: string;
 }
 
 interface FormProps {
@@ -244,7 +264,7 @@ const Register = () => {
 
   let navigate = useNavigate();
 
-  const [token, setToken] = useState<any>();
+  const Auth = useContext(AuthContext);
 
   const { register, handleSubmit, watch, formState:{errors} } = useForm<FormData>({mode:"onChange"});
 
@@ -253,8 +273,14 @@ const Register = () => {
 
   const onSubmit = (data:FormData) => {
     delete data.confirmPassword;
-    registerUser(data).then((userToken) => {
-      setToken(userToken);
+    registerUser(data).then((responseData:any) => {
+      const token = localStorage.setItem("token", responseData.token);
+      Auth.setToken("Bearer " + token);
+      window.alert("Cadastro feito com sucesso!");
+      navigate("/home");
+    }).catch(err => {
+      console.log(err);
+      alert(err);
     });
   }
 

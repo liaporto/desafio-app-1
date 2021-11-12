@@ -27,16 +27,22 @@ const generatePassword = (password) => {
 };
 
 const generateJWT = (user) => {
-  const sub = user.id;
-  const payload = {
-    sub: sub,
-    iat: Date.now(),
-  };
-  const jwt = jsonwebtoken.sign(payload, PRIV_KEY, {
-    expiresIn: "7d",
-    algorithm: "RS256",
-  });
-  return jwt;
+  try {
+    console.log(user);
+    const sub = user.id;
+    const payload = {
+      sub: sub,
+      iat: Date.now(),
+    };
+    const jwt = jsonwebtoken.sign(payload, PRIV_KEY, {
+      expiresIn: "7d",
+      algorithm: "RS256",
+    });
+    return jwt;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
 };
 
 const decodeJwt = (token) => {

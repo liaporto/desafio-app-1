@@ -29,6 +29,7 @@ const create = async (req, res) => {
       .json({ message: "Usuário cadastrado com sucesso!", user: user });
   } catch (err) {
     res.status(500).json({ error: err });
+    return;
   }
 };
 
@@ -38,6 +39,7 @@ const index = async (req, res) => {
     return res.status(200).json({ users });
   } catch (err) {
     res.status(500).json({ err });
+    return;
   }
 };
 
@@ -48,6 +50,7 @@ const find = async (req, res) => {
     return res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({ err });
+    return;
   }
 };
 
@@ -62,19 +65,21 @@ const update = async (req, res) => {
     throw new Error();
   } catch (err) {
     res.status(500).json("Usuário não encontrado.");
+    return;
   }
 };
 
 const destroy = async (req, res) => {
   const { id } = req.params;
   try {
-    const [deleted] = await User.destroy(req.body, { where: { id: id } });
+    const [deleted] = await User.destroy({ where: { id: id } });
     if (deleted) {
       return res.status(200).json("Usuário deletado com sucesso.");
     }
     throw new Error();
   } catch (err) {
     res.status(500).json("Usuário não encontrado.");
+    return;
   }
 };
 
