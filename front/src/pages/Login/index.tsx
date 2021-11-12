@@ -17,11 +17,7 @@ interface LoginData {
   password: string,
 }
 
-interface FormProps {
-  submitData?:Function
-}
-
-const Login = ({submitData}:FormProps) => {
+const Login = () => {
   let navigate = useNavigate();
 
   const Auth = useContext(AuthContext);

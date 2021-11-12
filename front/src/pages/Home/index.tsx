@@ -9,7 +9,7 @@ const Home = () => {
   let navigate = useNavigate();
   
   const handleLogOut = () => {
-  navigate("/");
+  navigate("/login");
   }
 
   const handleGoToEditData = () => {

@@ -1,24 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 import EditData from './pages/EditData';
 import Home from './pages/Home';
 
-import {Route, Routes} from 'react-router-dom';
+import {AuthContext} from './contexts/auth';
+
+import {Route, Routes, Navigate} from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
+  const Auth = useContext(AuthContext);
 
   const [isLogged, setIsLogged] = useState(false);
-
-  const postLoginData = (data:{}) => {
-    console.log(data);
-  }
-
-  const postRegisterData = (data:{}) => {
-    console.log(data);
-  }
-
+  
   const postEditData = (data:{}) => {
     console.log(data);
   }
@@ -44,10 +40,18 @@ function App() {
     <div className="main">
       <h1>Olá, {!isLogged ? "visitante" : ""}</h1>
       <Routes>
-        <Route path="/" element={<Login submitData={postLoginData}/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/home" element={<Home/>}/>
-        <Route path="/update" element={<EditData submitData={postEditData} getUserData={getUserData}/>}/>
+        <Route path="/home" element={
+          <PrivateRoute>
+            <Home/>
+          </PrivateRoute>
+        }/>
+        <Route path="/update" element={
+          <PrivateRoute>
+            <EditData submitData={postEditData} getUserData={getUserData}/>
+          </PrivateRoute>
+        }/>
       </Routes>
     </div>
   );
