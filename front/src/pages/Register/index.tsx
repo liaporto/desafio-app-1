@@ -10,6 +10,8 @@ import Button from '../../components/Button';
 
 import {StyledRegisterForm} from './style';
 
+import {registerUser} from "../../services/UserService";
+
 interface FormData {
   cpf: string,
   pis: string,
@@ -239,7 +241,7 @@ const brazilianStatesOptions = [
 ]
 
 
-const Register = ({submitData}:FormProps) => {
+const Register = () => {
 
   let navigate = useNavigate();
 
@@ -249,9 +251,7 @@ const Register = ({submitData}:FormProps) => {
   const watchPassword = watch("password");
 
   const onSubmit = (data:FormData) => {
-    console.log(data);
-    if (submitData) submitData(data);
-    navigate("/home");
+    registerUser(data);
   }
 
   return (

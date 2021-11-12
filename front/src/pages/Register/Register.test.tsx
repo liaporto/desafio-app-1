@@ -10,6 +10,8 @@ import userEvent from '@testing-library/user-event';
 
 import Register from ".";
 
+import { registerUser } from "../../services/UserService";
+
 const mockedNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => {
@@ -21,11 +23,30 @@ jest.mock('react-router-dom', () => {
   };
 });
 
+jest.mock("../../services/UserService");
+
+const mockRegisterUser = (registerUser as jest.Mock).mockResolvedValue({
+  cpf: "111.111.111-11",
+  pis: "111.1111.111-1",
+  name: "Fulano",
+  email: "email@exemplo.com",
+  hash: "fakehash",
+  salt: "fakesalt",
+  country: "Brasil",
+  state: "RJ",
+  city: "Rio das Ostras",
+  postalCode: "22222-222",
+  street: "Rua do Limoeiro",
+  number: "22",
+  additionalInfo: "Ap. 202",
+});
+
+const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => true);
+
 describe("Register form", () => {
-  let mockPost:jest.Mock = jest.fn();
 
   beforeEach(()=> {
-    render(<Register submitData={mockPost}/>);
+    render(<Register/>);
   })
 
   describe("render flow", () => {
@@ -397,7 +418,24 @@ describe("Register form", () => {
       fireEvent.click(submitButton);
       
 
-      await waitFor(() => expect(mockPost).toBeCalled());
+      await waitFor(() => {
+        expect(mockRegisterUser).toReturnWith({
+          cpf: "111.111.111-11",
+          pis: "111.1111.111-1",
+          name: "Fulano",
+          email: "email@exemplo.com",
+          hash: "fakehash",
+          salt: "fakesalt",
+          country: "Brasil",
+          state: "RJ",
+          city: "Rio das Ostras",
+          postalCode: "22222-222",
+          street: "Rua do Limoeiro",
+          number: "22",
+          additionalInfo: "Ap. 202",
+        });
+        expect(mockAlert).toBeCalledWith("Cadastro feito com sucesso!");
+      });
     });
   });
 });
