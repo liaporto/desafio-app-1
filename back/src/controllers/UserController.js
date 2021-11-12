@@ -1,9 +1,29 @@
 const { response } = require("express");
 const User = require("../models/User");
+const Auth = require("../config/auth");
 
 const create = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const { password } = req.body;
+    const hashAndSalt = Auth.generatePassword(password);
+    const salt = hashAndSalt.salt;
+    const hash = hashAndSalt.hash;
+    const newUserData = {
+      cpf: req.body.cpf,
+      pis: req.body.pis,
+      name: req.body.name,
+      email: req.body.email,
+      hash: hash,
+      salt: salt,
+      country: req.body.country,
+      state: req.body.state,
+      city: req.body.city,
+      postalCode: req.body.postalCode,
+      street: req.body.street,
+      number: req.body.number,
+      additionalInfo: req.body.additionalInfo,
+    };
+    const user = await User.create(newUserData);
     return res
       .status(201)
       .json({ message: "Usuário cadastrado com sucesso!", user: user });
