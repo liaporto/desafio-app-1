@@ -44,7 +44,7 @@ function App() {
       <h1>Olá, {!isLogged ? "visitante" : ""}</h1>
       <Routes>
         <Route path="/" element={<Login submitData={postLoginData}/>}/>
-        <Route path="/register" element={<Register submitData={postRegisterData}/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/update" element={<EditData submitData={postEditData} getUserData={getUserData}/>}/>
       </Routes>

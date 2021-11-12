@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useForm } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 
@@ -20,8 +20,7 @@ interface FormData {
   password: string,
   confirmPassword?: string,
   country: string,
-  brazilianState?: string,
-  generalState?: string,
+  state: string,
   city: string,
   postalCode: string,
   street: string,
@@ -245,13 +244,18 @@ const Register = () => {
 
   let navigate = useNavigate();
 
+  const [token, setToken] = useState<any>();
+
   const { register, handleSubmit, watch, formState:{errors} } = useForm<FormData>({mode:"onChange"});
 
   const watchCountry = watch("country", "Brasil");
   const watchPassword = watch("password");
 
   const onSubmit = (data:FormData) => {
-    registerUser(data);
+    delete data.confirmPassword;
+    registerUser(data).then((userToken) => {
+      setToken(userToken);
+    });
   }
 
   return (
@@ -359,7 +363,7 @@ const Register = () => {
                 id="state"
                 testId="stateSelectInput"
                 selectOptions={brazilianStatesOptions}
-                register={register("brazilianState", {
+                register={register("state", {
                   required: "Estado não pode ficar vazio"
                 })}
               />
@@ -367,13 +371,12 @@ const Register = () => {
             (
               <TextInput id="state" data-testid="stateTextInput" name="state" type="text" placeholder=""
               defaultValue = ''
-              register = {register("generalState", {
+              register = {register("state", {
                 required: "Estado não pode ficar vazio"
               })}
             />
             )}
-            {errors.brazilianState && <span>{errors.brazilianState.message}</span>}
-            {errors.generalState && <span>{errors.generalState.message}</span>}
+            {errors.state && <span>{errors.state.message}</span>}
           </FormControl>
           <FormControl inputLabel="Município*" htmlFor="city" controlWidth="half">
             <TextInput id="city" name="city" type="text" placeholder="Rio de Janeiro"
