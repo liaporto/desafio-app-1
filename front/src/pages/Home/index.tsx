@@ -1,15 +1,22 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useNavigate} from 'react-router-dom';
+
+import { AuthContext } from '../../contexts/auth';
 
 import Button from '../../components/Button'
 
 import { ButtonContainer } from './style'
 
 const Home = () => {
+  
+  const Auth = useContext(AuthContext);
+
   let navigate = useNavigate();
   
   const handleLogOut = () => {
-  navigate("/login");
+    localStorage.removeItem("token");
+    Auth.setToken("");
+    navigate("/");
   }
 
   const handleGoToEditData = () => {

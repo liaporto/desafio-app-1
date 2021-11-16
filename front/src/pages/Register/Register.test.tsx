@@ -10,7 +10,7 @@ import userEvent from '@testing-library/user-event';
 
 import Register from ".";
 
-import { registerUser } from "../../services/UserService";
+import * as userService from "../../services/UserService";
 
 const mockedNavigate = jest.fn();
 
@@ -23,29 +23,7 @@ jest.mock('react-router-dom', () => {
   };
 });
 
-jest.mock("../../services/UserService");
-
-const mockRegisterUser = (registerUser as jest.Mock).mockResolvedValue({
-  message: "Usuário cadastrado com sucesso!",
-  user: {
-    id: 1,
-    cpf: "111.111.111-11",
-    pis: "111.1111.111-1",
-    name: "Fulano",
-    email: "email@exemplo.com",
-    hash: "fakehash",
-    salt: "fakesalt",
-    country: "Brasil",
-    state: "RJ",
-    city: "Rio das Ostras",
-    postalCode: "22222-222",
-    street: "Rua do Limoeiro",
-    number: "22",
-    additionalInfo: "Ap. 202",
-  }
-});
-
-const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => true);
+const mockRegisterUser = jest.spyOn(userService, "registerUser");
 
 describe("Register form", () => {
 
@@ -351,13 +329,13 @@ describe("Register form", () => {
 
       fireEvent.input(cpfInput, {
         target: {
-          value: "111.111.111-11",
+          value: "99999999999",
         },
       });
 
       fireEvent.input(pisInput, {
         target: {
-          value: "111.1111.111-1",
+          value: "99999999999",
         },
       });
 
@@ -423,27 +401,6 @@ describe("Register form", () => {
 
       await waitFor(async () => {
         expect(mockRegisterUser).toBeCalled();
-        // expect(mockAlert).toBeCalledWith("Cadastro feito com sucesso!");
-      });
-
-      return expect(mockRegisterUser()).resolves.toBe({
-        message: "Usuário cadastrado com sucesso!",
-        user: {
-          id: 1,
-          cpf: "111.111.111-11",
-          pis: "111.1111.111-1",
-          name: "Fulano",
-          email: "email@exemplo.com",
-          hash: "fakehash",
-          salt: "fakesalt",
-          country: "Brasil",
-          state: "RJ",
-          city: "Rio das Ostras",
-          postalCode: "22222-222",
-          street: "Rua do Limoeiro",
-          number: "22",
-          additionalInfo: "Ap. 202",
-        }
       });
     });
   });

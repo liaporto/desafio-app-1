@@ -1,8 +1,10 @@
-import React, {useState, useContext} from 'react';
-import { useForm } from 'react-hook-form';
+import React, {useContext} from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 
 import {AuthContext} from '../../contexts/auth';
+
+import InputMask from "react-input-mask";
 
 import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
@@ -266,7 +268,7 @@ const Register = () => {
 
   const Auth = useContext(AuthContext);
 
-  const { register, handleSubmit, watch, formState:{errors} } = useForm<FormData>({mode:"onChange"});
+  const { register, handleSubmit, watch, control, formState:{errors} } = useForm<FormData>({mode:"onChange"});
 
   const watchCountry = watch("country", "Brasil");
   const watchPassword = watch("password");
@@ -290,31 +292,61 @@ const Register = () => {
       <StyledRegisterForm onSubmit={handleSubmit(onSubmit)}>
         <Fieldset legend="Dados pessoais">
           <FormControl inputLabel="CPF*" htmlFor="cpf" controlWidth="half">
-            <TextInput
-              id="cpf"
-              type="text"
-              placeholder="111.111.111-11"
-              register = {register("cpf", {
+            <Controller
+              control={control}
+              name="cpf"
+              defaultValue=''
+              render = {({field: {value, onChange, ref}}:any) => {
+                return (
+                  <InputMask
+                    mask="999.999.999-99"
+                    value={value}
+                    onChange = {onChange}>
+                     {() => <TextInput
+                        id="cpf"
+                        type="text"
+                        inputRef={ref}
+                        placeholder="111.111.111-11"
+                      />}
+                  </InputMask>
+                )
+              }}
+              rules = {{
                 required: "CPF não pode ficar vazio",
                 pattern: {
                   value: /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/i,
                   message: "CPF inválido"}
-              })}
+              }}
             />
             {errors.cpf && <span>{errors.cpf.message}</span>}
           </FormControl>
           <FormControl inputLabel="PIS*" htmlFor="pis" controlWidth="half">
-            <TextInput
-              id="pis"
-              type="text"
-              placeholder="111.1111.111-1"
-              register = {register("pis", {
-                required: "PIS não pode ficar vazio",
-                pattern: {
-                  value: /^\d{3}\.?\d{4}\.?\d{3}-?\d{1}$/i,
-                  message: "PIS inválido"}
-              })}
-            />
+            <Controller
+                control={control}
+                name="pis"
+                defaultValue=''
+                render = {({field: {value, onChange, ref}}:any) => {
+                  return (
+                    <InputMask
+                      mask="999.9999.999-9"
+                      value={value}
+                      onChange = {onChange}>
+                      {() => <TextInput
+                          id="pis"
+                          type="text"
+                          inputRef={ref}
+                          placeholder="111.1111.111-1"
+                        />}
+                    </InputMask>
+                  )
+                }}
+                rules = {{
+                  required: "PIS não pode ficar vazio",
+                  pattern: {
+                    value: /^\d{3}\.?\d{4}\.?\d{3}-?\d{1}$/i,
+                    message: "PIS inválido"}
+                }}
+              />
             {errors.pis && <span>{errors.pis.message}</span>}
           </FormControl>
           <FormControl inputLabel="Primeiro nome*" htmlFor="name" controlWidth="half">

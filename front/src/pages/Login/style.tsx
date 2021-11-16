@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 50%;
+  width: 60%;
   margin: auto;
 `
 
@@ -11,3 +11,9 @@ export const StyledLoginForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
+
+export const RadioInputRow = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+`
