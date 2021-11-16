@@ -273,7 +273,7 @@ const EditData = ({submitData, getUserData}:FormProps) => {
   const handleDeleteUser = () => {
     if(window.confirm("Tem certeza que deseja apagar o perfil?")){
       console.log("Perfil apagado");
-      navigate("/login");
+      navigate("/");
     } else {
       console.log("Cancelado");
     }

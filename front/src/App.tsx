@@ -40,13 +40,13 @@ function App() {
     <div className="main">
       <h1>Olá, {!isLogged ? "visitante" : ""}</h1>
       <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
         <Route path="/home" element={
           <PrivateRoute>
             <Home/>
           </PrivateRoute>
         }/>
+        <Route path="/" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/update" element={
           <PrivateRoute>
             <EditData submitData={postEditData} getUserData={getUserData}/>
