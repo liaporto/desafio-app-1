@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import { Navigate, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import {AuthContext} from '../../contexts/auth';
 
 interface PrivateRouteProps {
@@ -7,13 +7,11 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({children}:PrivateRouteProps) => {
-  const { signed } = useContext(AuthContext);
+  const Auth = useContext(AuthContext);
 
-  return signed
+  return Auth.signed
     ? children
-    : <Navigate to="/login" />;
-  
-  // return <Route path={path} element={finalElement} />;
+    : <Navigate to="/" />;
 }
 
 export default PrivateRoute;
