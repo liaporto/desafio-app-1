@@ -49,7 +49,7 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/update" element={
           <PrivateRoute>
-            <EditData submitData={postEditData} getUserData={getUserData}/>
+            <EditData/>
           </PrivateRoute>
         }/>
       </Routes>

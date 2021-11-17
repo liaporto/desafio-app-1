@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 
-import {getUserDetails, updateUser} from "../../services/UserService";
+import {getUserDetails, updateUser, deleteUser} from "../../services/UserService";
 import {AuthContext} from '../../contexts/auth';
 
 import Fieldset from '../../components/Fieldset';
@@ -256,7 +256,7 @@ const brazilianStatesOptions = [
 	{value:"TO", label:"Tocantins"},
 ]
 
-const EditData = ({submitData, getUserData}:FormProps) => {
+const EditData = () => {
 
   let navigate = useNavigate();
 
@@ -273,7 +273,6 @@ const EditData = ({submitData, getUserData}:FormProps) => {
     console.log(data);
     if(userData){
       updateUser(userData.id, data).then(response => {
-        console.log(response);
         window.alert("Dados alterados com sucesso!");
       }).catch(err => {
         console.log(err);
@@ -283,11 +282,16 @@ const EditData = ({submitData, getUserData}:FormProps) => {
   }
 
   const handleDeleteUser = () => {
-    if(window.confirm("Tem certeza que deseja apagar o perfil?")){
-      console.log("Perfil apagado");
-      navigate("/");
-    } else {
-      console.log("Cancelado");
+    if(userData){
+      if(window.confirm("Tem certeza que deseja apagar o perfil?")){
+        deleteUser(userData.id).then(res => {
+          console.log(res);
+          window.alert("Perfil apagado.");
+          navigate("/");
+        })
+      } else {
+        console.log("Operação cancelada");
+      }
     }
   }
 
@@ -369,24 +373,21 @@ const EditData = ({submitData, getUserData}:FormProps) => {
           />
           {errors.email && <span>{errors.email.message}</span>}
         </FormControl>
-        <FormControl inputLabel="Senha*" htmlFor="password" controlWidth="half">
+        <FormControl inputLabel="Senha" htmlFor="password" controlWidth="half">
           <TextInput
             id="password"
             type="password"
             placeholder="Insira uma senha"
-            register = {register("password", {
-              // required: "A senha não pode ficar vazia",
-            })}
+            register = {register("password")}
           />
           {errors.password && <span>{errors.password.message}</span>}
         </FormControl>
-        <FormControl inputLabel="Confirmar senha*" htmlFor="confirmPassword" controlWidth="half">
+        <FormControl inputLabel="Confirmar senha" htmlFor="confirmPassword" controlWidth="half">
           <TextInput
             id="confirmPassword"
             type="password"
             placeholder="Repita a senha"
             register = {register("confirmPassword", {
-              // required: "A confirmação de senha não pode ficar vazia",
               validate: (value) => {
                 if(value !== watchPassword){
                   return "As senhas não estão iguais";
@@ -480,7 +481,7 @@ const EditData = ({submitData, getUserData}:FormProps) => {
         </FormControl>
       </Fieldset>
       <ButtonContainer>
-        <Button width="half" styleType="outline" mainColor="secondary" onClick={handleDeleteUser}>Apagar perfil</Button>
+        <Button type="button" width="half" styleType="outline" mainColor="secondary" onClick={handleDeleteUser}>Apagar perfil</Button>
         <Button type="submit" width="half" styleType="solid" mainColor="primary">Salvar edições</Button>
       </ButtonContainer>
     </StyledEditDataForm>

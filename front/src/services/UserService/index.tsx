@@ -26,4 +26,10 @@ const updateUser = async (id:number, data:{}) => {
   }, (err => console.log(err)));
 }
 
-export {registerUser, loginUser, getUserDetails, updateUser};
+const deleteUser = async (id:number) => {
+  return api.delete(`/users/${id}`).then(response => {
+    return response.data;
+  }, (err => console.log(err)));
+}
+
+export {registerUser, loginUser, getUserDetails, updateUser, deleteUser};
