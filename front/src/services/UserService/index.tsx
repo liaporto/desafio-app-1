@@ -14,10 +14,16 @@ const loginUser = async (data:{}) => {
   }, ((err) => console.log(err.message)));
 }
 
-const findUser = async (userId:string) => {
-  return api.get(`/users/${userId}`).then((response) => {
+const getUserDetails = async (token:string) => {
+  return api.get('/private/getDetails', {headers: {'Authorization': `${token}`}}).then((response) => {
     return response.data;
   }, (err => console.log(err)));
 }
 
-export {registerUser, loginUser};
+const updateUser = async (id:number, data:{}) => {
+  return api.put(`/update/${id}`, data).then((response) => {
+    return response.data;
+  }, (err => console.log(err)));
+}
+
+export {registerUser, loginUser, getUserDetails, updateUser};

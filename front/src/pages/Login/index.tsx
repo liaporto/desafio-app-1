@@ -1,7 +1,8 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import {loginUser} from "../../services/UserService";
 import {AuthContext} from '../../contexts/auth';
 
 import InputMask from "react-input-mask";
@@ -12,7 +13,6 @@ import FormControl from '../../components/FormControl';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 
-import {loginUser} from "../../services/UserService";
 import Fieldset from '../../components/Fieldset';
 
 interface LoginData {

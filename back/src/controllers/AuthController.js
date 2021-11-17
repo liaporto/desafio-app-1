@@ -91,8 +91,46 @@ const getDetails = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { password } = req.body;
+    const newUserData = {
+      cpf: req.body.cpf,
+      pis: req.body.pis,
+      name: req.body.name,
+      email: req.body.email,
+      country: req.body.country,
+      state: req.body.state,
+      city: req.body.city,
+      postalCode: req.body.postalCode,
+      street: req.body.street,
+      number: req.body.number,
+      additionalInfo: req.body.additionalInfo,
+    };
+
+    if (password !== "") {
+      const hashAndSalt = Auth.generatePassword(password);
+      newUserData.salt = hashAndSalt.salt;
+      newUserData.hash = hashAndSalt.hash;
+    }
+
+    const [updated] = await User.update(newUserData, { where: { id: id } });
+    if (updated) {
+      const user = await User.findByPk(id);
+      return res.status(200).send(user);
+    }
+    throw new Error();
+  } catch (err) {
+    res.status(500).json("Usuário não encontrado.");
+    return;
+  }
+};
+
 module.exports = {
   register,
   login,
   getDetails,
+  update,
 };

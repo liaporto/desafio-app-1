@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
+
+import {getUserDetails, updateUser} from "../../services/UserService";
+import {AuthContext} from '../../contexts/auth';
 
 import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
@@ -11,11 +14,11 @@ import Button from '../../components/Button';
 import {StyledEditDataForm, ButtonContainer} from './style';
 
 interface UserData{
+  id: number;
   cpf: string;
   pis: string;
   name: string;
   email: string;
-  password: string;
   country: string;
   state: string;
   city: string;
@@ -257,6 +260,8 @@ const EditData = ({submitData, getUserData}:FormProps) => {
 
   let navigate = useNavigate();
 
+  const Auth = useContext(AuthContext);
+
   const [userData, setUserData] = useState<UserData>();
 
   const { register, handleSubmit, setValue, watch, formState:{errors} } = useForm<FormData>({mode:"onChange"});
@@ -266,8 +271,15 @@ const EditData = ({submitData, getUserData}:FormProps) => {
 
   const onSubmit = (data:FormData) => {
     console.log(data);
-    if (submitData) submitData(data);
-    window.alert("Dados alterados com sucesso!");
+    if(userData){
+      updateUser(userData.id, data).then(response => {
+        console.log(response);
+        window.alert("Dados alterados com sucesso!");
+      }).catch(err => {
+        console.log(err);
+        window.alert("Algo deu errado.");
+      });
+    }
   }
 
   const handleDeleteUser = () => {
@@ -280,12 +292,14 @@ const EditData = ({submitData, getUserData}:FormProps) => {
   }
 
   const fetchUserData = async () => {
-    return await getUserData("1");
+    const userToken = Auth.getToken();
+    const responseData = await getUserDetails(userToken);
+    return responseData;
   }
 
   useEffect(() => {
     fetchUserData().then((data) => {
-      setUserData(data);
+      setUserData(data.user);
     });
   }, []);
 
@@ -295,8 +309,6 @@ const EditData = ({submitData, getUserData}:FormProps) => {
       setValue('pis', userData.pis);
       setValue('name', userData.name);
       setValue('email', userData.email);
-      setValue('password', userData.password);
-      setValue('confirmPassword', userData.password);
       setValue('country', userData.country);
       setValue('state', userData.state);
       setValue('city', userData.city);
@@ -363,7 +375,7 @@ const EditData = ({submitData, getUserData}:FormProps) => {
             type="password"
             placeholder="Insira uma senha"
             register = {register("password", {
-              required: "A senha não pode ficar vazia",
+              // required: "A senha não pode ficar vazia",
             })}
           />
           {errors.password && <span>{errors.password.message}</span>}
@@ -374,7 +386,7 @@ const EditData = ({submitData, getUserData}:FormProps) => {
             type="password"
             placeholder="Repita a senha"
             register = {register("confirmPassword", {
-              required: "A confirmação de senha não pode ficar vazia",
+              // required: "A confirmação de senha não pode ficar vazia",
               validate: (value) => {
                 if(value !== watchPassword){
                   return "As senhas não estão iguais";
