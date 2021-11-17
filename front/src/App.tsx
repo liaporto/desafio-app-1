@@ -8,7 +8,7 @@ import Home from './pages/Home';
 import { getUserDetails } from './services/UserService';
 import {AuthContext} from './contexts/auth';
 
-import {Route, Routes, Navigate} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {

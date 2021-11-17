@@ -23,23 +23,19 @@ const AuthProvider = (props:any) => {
     }
     return token;
   };
-
-  const checkIsLoggedIn = () => {
+  
+  useEffect(()=> {
+    const token = getToken();
+    setAuthorization(token);
+  }, [])
+  
+  useEffect(()=>{
     if(authorization !== ""){
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-  }
-
-  useEffect(()=> {
-    const token = getToken();
-    setAuthorization(token);
-  }, [])
-
-  useEffect(()=>{
-    checkIsLoggedIn();
-  }, [authorization])
+  }, [authorization]);
 
   return (
     <AuthContext.Provider value={{token: authorization, setToken: setAuthorization, signed: isLoggedIn, getToken}}>
