@@ -1,10 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 import EditData from './pages/EditData';
 import Home from './pages/Home';
 
+import { getUserDetails } from './services/UserService';
 import {AuthContext} from './contexts/auth';
 
 import {Route, Routes, Navigate} from 'react-router-dom';
@@ -14,31 +15,29 @@ function App() {
   const Auth = useContext(AuthContext);
 
   const [isLogged, setIsLogged] = useState(false);
-  
-  const postEditData = (data:{}) => {
-    console.log(data);
+  const [userName, setUserName] = useState("");
+
+  const getUserName = async (token:string) => {
+    return getUserDetails(token).then(res => {
+      return res.user.name;
+    }).catch(err => console.log(err));
   }
 
-  const getUserData = async (userId:string) => {
-    return Promise.resolve({
-      cpf: "222.222.222-22",
-      pis: "222.2222.222-2",
-      name: "Teste",
-      email: "teste@email.com",
-      password: "pass1",
-      country: "Brasil",
-      state: "RJ",
-      city: "Rio das Ostras",
-      postalCode: "22222-222",
-      street: "Rua do Limoeiro",
-      number: "22",
-      additionalInfo: "Ap. 202"
-    })
-  }
+  useEffect(() => {
+    const token = Auth.getToken();
+    if (token){
+      setIsLogged(true); 
+      getUserName(token).then(name => {
+        setUserName(name);
+      })
+    } else {
+      setIsLogged(false);
+    }
+  }, [Auth]);
 
   return (
     <div className="main">
-      <h1>Olá, {!isLogged ? "visitante" : ""}</h1>
+      <h1>Olá, {!isLogged ? "visitante" : userName}</h1>
       <Routes>
         <Route path="/home" element={
           <PrivateRoute>
@@ -49,7 +48,7 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/update" element={
           <PrivateRoute>
-            <EditData/>
+            <EditData setUserName={setUserName}/>
           </PrivateRoute>
         }/>
       </Routes>

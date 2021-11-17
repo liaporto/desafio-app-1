@@ -44,11 +44,6 @@ interface FormData {
   additionalInfo?: string;
 }
 
-interface FormProps {
-  submitData?:Function;
-  getUserData: Function;
-}
-
 const countryOptions = [
   {value: "Brasil", label:"Brasil"},
   {value: "África do Sul", label:"África do Sul"},
@@ -256,7 +251,7 @@ const brazilianStatesOptions = [
 	{value:"TO", label:"Tocantins"},
 ]
 
-const EditData = () => {
+const EditData = ({setUserName}:any) => {
 
   let navigate = useNavigate();
 
@@ -269,11 +264,18 @@ const EditData = () => {
   const watchCountry = watch("country", "Brasil");
   const watchPassword = watch("password");
 
+  const fetchUserData = async () => {
+    const userToken = Auth.getToken();
+    const responseData = await getUserDetails(userToken);
+    return responseData;
+  }
+
   const onSubmit = (data:FormData) => {
     console.log(data);
     if(userData){
       updateUser(userData.id, data).then(response => {
         window.alert("Dados alterados com sucesso!");
+        setUserName(response.name);
       }).catch(err => {
         console.log(err);
         window.alert("Algo deu errado.");
@@ -285,7 +287,8 @@ const EditData = () => {
     if(userData){
       if(window.confirm("Tem certeza que deseja apagar o perfil?")){
         deleteUser(userData.id).then(res => {
-          console.log(res);
+          localStorage.removeItem("token");
+          Auth.setToken("");
           window.alert("Perfil apagado.");
           navigate("/");
         })
@@ -293,12 +296,6 @@ const EditData = () => {
         console.log("Operação cancelada");
       }
     }
-  }
-
-  const fetchUserData = async () => {
-    const userToken = Auth.getToken();
-    const responseData = await getUserDetails(userToken);
-    return responseData;
   }
 
   useEffect(() => {
