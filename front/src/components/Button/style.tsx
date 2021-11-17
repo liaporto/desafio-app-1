@@ -10,7 +10,7 @@ export const StyledButton = styled.button<CustomButton>`
   cursor: pointer;
 
   height: 50px;
-  width: ${props => (props.width === "full" || !props.width) ? "100%" : "48%"};
+  width: ${props => (props.width === "full" || !props.width) ? "100%" : (props.width === "half") ? "48%" : "5em"};
 
   color: ${props => (props.styleType === "solid" ? "#fff" : `var(--${props.mainColor})` )};
   font-size: 1em;

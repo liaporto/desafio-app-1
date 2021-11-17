@@ -5,14 +5,18 @@ import Register from './pages/Register';
 import EditData from './pages/EditData';
 import Home from './pages/Home';
 
+import BackButton from './components/BackButton';
+
 import { getUserDetails } from './services/UserService';
 import {AuthContext} from './contexts/auth';
 
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const Auth = useContext(AuthContext);
+
+  const location = useLocation();
 
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState("");
@@ -36,8 +40,14 @@ function App() {
   }, [Auth]);
 
   return (
-    <div className="main">
-      <h1>Olá, {!isLogged ? "visitante" : userName}</h1>
+    <div className="wrapper">
+      <header>
+        <div className="backButtonContainer">
+          {location.pathname !== "/" && <BackButton/>}
+        </div>
+        <h1>Olá, {!isLogged ? "visitante" : userName}</h1>
+      </header>
+
       <Routes>
         <Route path="/home" element={
           <PrivateRoute>

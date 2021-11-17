@@ -41,7 +41,7 @@ export default createGlobalStyle`
   
   h1{
     font-size: 2.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
   }
   
   h2{
@@ -49,10 +49,19 @@ export default createGlobalStyle`
     font-weight: 400;
     margin-bottom: 1em;
   }
-
-  .main{
+  
+  .wrapper{
     width: 40%;
     margin: 10vh auto 0;
     text-align: center;
+  }
+  
+  header{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .backButtonContainer{
+    text-align: left;
   }
 `
