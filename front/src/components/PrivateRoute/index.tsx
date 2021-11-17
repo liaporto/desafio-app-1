@@ -8,8 +8,9 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({children}:PrivateRouteProps) => {
   const Auth = useContext(AuthContext);
+  const token = Auth.getToken();
 
-  return Auth.signed
+  return token !== ""
     ? children
     : <Navigate to="/" />;
 }

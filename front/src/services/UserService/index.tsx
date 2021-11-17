@@ -8,7 +8,9 @@ const registerUser = async (data:{}) => {
 
 const loginUser = async (data:{}) => {
   return api.post('/login', data).then((response) => {
-    return response.data;
+    const token = response.data.token;
+    localStorage.setItem("token", token);
+    return token;
   }, ((err) => console.log(err.message)));
 }
 

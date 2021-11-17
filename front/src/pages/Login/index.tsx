@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +21,7 @@ interface LoginData {
 }
 
 const Login = () => {
+  
   let navigate = useNavigate();
 
   const Auth = useContext(AuthContext);
@@ -35,10 +36,8 @@ const Login = () => {
   }
 
   const onSubmit = (data:LoginData) => {
-    loginUser(data).then(responseData => {
-      const token = responseData.token;
-      localStorage.setItem("token", token);
-      Auth.setToken("Bearer "+token);
+    loginUser(data).then(() => {
+      Auth.setToken(Auth.getToken());
       navigate("/home");
     }).catch(err => {
       console.log(err);
@@ -99,7 +98,7 @@ const Login = () => {
               {selectedLoginType === "email" ?
               (
                 <TextInput
-                  data-testId="email_input"
+                  data-testid="email_input"
                   id="loginId"
                   type="text"
                   aria-label="E-mail"
@@ -127,7 +126,7 @@ const Login = () => {
                         value={value}
                         onChange = {onChange}>
                         {() => <TextInput
-                                  data-testId="cpf_input"
+                                  data-testid="cpf_input"
                                   id="loginId"
                                   type="text"
                                   aria-label="CPF"
@@ -158,7 +157,7 @@ const Login = () => {
                         value={value}
                         onChange = {onChange}>
                         {() => <TextInput
-                                data-testId="pis_input"
+                                data-testid="pis_input"
                                 id="loginId"
                                 type="text"
                                 aria-label="PIS"

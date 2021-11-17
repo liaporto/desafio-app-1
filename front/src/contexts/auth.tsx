@@ -4,48 +4,45 @@ interface Data{
   token: string;
   setToken: any;
   signed: boolean;
+  getToken: any;
 }
 
 export const AuthContext = createContext<Data>({} as Data);
 
 const AuthProvider = (props:any) => {
   const [authorization, setAuthorization] = useState("");
-  const [checkLogin, setCheckLogin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const getToken = async () => {
+  const getToken = () => {
     let token = '';
-    try {
-        const value = localStorage.getItem('token');
-        if(value !== null) {
-            token = 'Bearer '.concat(value);
-            return token;
-        }
-    } catch (e) {
-        console.log("Sem token.")
+    const value = localStorage.getItem('token');
+    if(value !== null) {
+      token = 'Bearer '.concat(value);
+    } else {
+      console.log("Sem token.");
     }
     return token;
   };
 
   const checkIsLoggedIn = () => {
     if(authorization !== ""){
-      setCheckLogin(true);
+      setIsLoggedIn(true);
     } else {
-      setCheckLogin(false);
+      setIsLoggedIn(false);
     }
   }
 
   useEffect(()=> {
-    getToken().then(token => {
-      setAuthorization(token);
-    })
+    const token = getToken();
+    setAuthorization(token);
   }, [])
 
   useEffect(()=>{
     checkIsLoggedIn();
-  }, [authorization, checkLogin])
+  }, [authorization])
 
   return (
-    <AuthContext.Provider value={{token: authorization, setToken: setAuthorization, signed: checkLogin}}>
+    <AuthContext.Provider value={{token: authorization, setToken: setAuthorization, signed: isLoggedIn, getToken}}>
       {props.children}
     </AuthContext.Provider>
   )
