@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -30,6 +30,14 @@ const Login = () => {
 
   const [selectedLoginType, setSelectedLoginType] = useState("email");
 
+
+  const redirectIfLoggedIn = () => {
+    const token = Auth.getToken();
+    if(token !== ""){
+      navigate("/home");
+    }
+  }
+
   const handleLoginTypeChange = (e:any) => {
     const {value} = e.target;
     setSelectedLoginType(value);
@@ -48,6 +56,10 @@ const Login = () => {
   const handleGoToRegister = () => {
     navigate("/register");
   }
+
+  useEffect(() => {
+    redirectIfLoggedIn();
+  }, [Auth, redirectIfLoggedIn])
 
   return (
     <main>
