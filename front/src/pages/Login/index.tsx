@@ -59,7 +59,7 @@ const Login = () => {
 
   useEffect(() => {
     redirectIfLoggedIn();
-  }, [Auth, redirectIfLoggedIn])
+  }, [Auth])
 
   return (
     <main>

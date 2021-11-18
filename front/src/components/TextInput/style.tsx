@@ -16,4 +16,16 @@ export const StyledInput = styled.input`
     background-color: var(--light-gray);
     color: var(--dark-gray);
   }
+
+  @media(max-width: 530px){
+    &::placeholder{
+      font-size: 1.3em;
+    }
+  }
+
+  @media(max-width: 960px){
+    &::placeholder{
+      font-size: 1.2em;
+    }
+  }
 `;

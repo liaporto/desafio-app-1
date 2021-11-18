@@ -8,4 +8,8 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media(max-width: 530px){
+    width: 70%;
+  }
 `;

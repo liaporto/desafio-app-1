@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 60%;
-  margin: auto;
+  margin: auto auto 4em;
+
+  @media(max-width: 530px){
+    width: 85%;
+  }
 `
 
 export const StyledLoginForm = styled.form`

@@ -11,6 +11,11 @@ export const StyledFieldset = styled.fieldset`
   justify-content: space-between;
   
   border: none;
+
+  @media(max-width: 540px){
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const StyledLegend = styled.legend`

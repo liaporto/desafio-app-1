@@ -7,6 +7,10 @@ interface FormControl {
 export const StyledFormControl = styled.div<FormControl>`
   width: ${props => props.width === "half" ? '48%' : '100%'};
   margin-bottom: 2em;
+  
+  @media(max-width: 540px){
+    width: 100%;
+  }
 `;
 
 export const StyledLabel = styled.label`

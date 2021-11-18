@@ -41,7 +41,7 @@ export default createGlobalStyle`
   
   h1{
     font-size: 2.5em;
-    margin-bottom: 1em;
+    margin-bottom: .6em;
   }
   
   h2{
@@ -63,5 +63,13 @@ export default createGlobalStyle`
 
   .backButtonContainer{
     text-align: left;
+  }
+
+  @media(max-width: 960px){
+    .wrapper{
+      width: 90%;
+      margin: 5vh auto 0;
+      text-align: center;
+    }
   }
 `
