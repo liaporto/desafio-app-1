@@ -32,28 +32,6 @@ interface FormData {
   additionalInfo?: string
 }
 
-interface UserData {
-  id: number;
-  cpf: string;
-  pis: string;
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword?: string;
-  country: string;
-  state: string;
-  city: string;
-  postalCode: string;
-  street: string;
-  number: string;
-  additionalInfo?: string;
-  updatedAt: string;
-}
-
-interface FormProps {
-  submitData?:Function
-}
-
 const countryOptions = [
   {value: "Brasil", label:"Brasil"},
   {value: "África do Sul", label:"África do Sul"},

@@ -5,7 +5,6 @@ import Button from '../Button';
 
 import { AuthContext } from '../../contexts/auth';
 
-import {FiArrowLeft} from 'react-icons/fi';
 import { StyledArrowIcon } from './style';
 
 const BackButton = () => {
