@@ -40,11 +40,14 @@ const register = async (req, res) => {
 
     const user = await User.create(newUserData);
     const token = Auth.generateJWT(user);
-    return res.status(201).json({
-      message: "Usuário criado com sucesso!",
-      user: user,
-      token: token,
-    });
+    return res
+      .status(201)
+      .cookie("token", token, { httpOnly: true, secure: false })
+      .json({
+        message: "Usuário criado com sucesso!",
+        user: user,
+        token: token,
+      });
   } catch (err) {
     return res.status(500).json({ error: err });
   }
@@ -69,7 +72,10 @@ const login = async (req, res) => {
     const { password } = req.body;
     if (Auth.checkPassword(password, user.hash, user.salt)) {
       const token = Auth.generateJWT(user);
-      return res.status(200).json({ token: token });
+      return res
+        .status(200)
+        .cookie("token", token, { httpOnly: true, secure: false })
+        .json({ message: "Login realizado com sucesso!" });
     } else {
       return res.status(401).json({ message: "Senha inválida" });
     }
@@ -81,6 +87,7 @@ const login = async (req, res) => {
 const getDetails = async (req, res) => {
   try {
     const token = Auth.getToken(req);
+    if (!token) return res.status(401).json({ message: "Não autorizado." });
     const payload = Auth.decodeJwt(token);
     const user = await User.findByPk(payload.sub); //pegar_informação_do_usuário_logado
     if (!user)
@@ -128,9 +135,22 @@ const update = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  if (req.cookies["token"]) {
+    res.clearCookie("token").status(200).json({
+      message: "Você foi deslogado",
+    });
+  } else {
+    res.status(401).json({
+      error: "Token inválido",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getDetails,
   update,
+  logout,
 };

@@ -33,6 +33,7 @@ const generateJWT = (user) => {
     const payload = {
       sub: sub,
       iat: Date.now(),
+      expiration: Date.now() + parseInt(604800000),
     };
     const jwt = jsonwebtoken.sign(payload, PRIV_KEY, {
       expiresIn: "7d",
@@ -53,9 +54,9 @@ const decodeJwt = (token) => {
 };
 
 const getToken = (req) => {
-  const header = req.get("Authorization");
-  if (!header) return error;
-  return header.split(" ")[1];
+  const token = req.cookies["token"];
+  if (!token) return;
+  return token;
 };
 
 module.exports = {

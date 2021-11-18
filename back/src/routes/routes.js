@@ -2,7 +2,6 @@ const UserController = require("../controllers/UserController");
 const AuthController = require("../controllers/AuthController");
 const { Router } = require("express");
 const passport = require("passport");
-const setAuthorizationHeader = require("../middlewares/token");
 
 const router = Router();
 
@@ -12,6 +11,7 @@ router.use("/private", passport.authenticate("jwt", { session: false }));
 router.get("/private/getDetails", AuthController.getDetails);
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
+router.get("/logout", AuthController.logout);
 router.put("/update/:id", AuthController.update);
 
 // User-Routes
