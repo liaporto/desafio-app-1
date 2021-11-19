@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useCookies } from 'react-cookie';
 
-import InputMask from 'react-input-mask';
+import NumberFormat from 'react-number-format';
 import { registerUser } from '../../services/UserService';
 
 import Fieldset from '../../components/Fieldset';
@@ -282,21 +282,17 @@ function Register() {
               control={control}
               name="cpf"
               defaultValue=""
-              render={({ field: { value, onChange, ref } }: any) => (
-                <InputMask
-                  mask="999.999.999-99"
+              render={({ field: { value, onChange } }: any) => (
+                <NumberFormat
+                  format="###.###.###-##"
+                  mask="_"
                   value={value}
                   onChange={onChange}
-                >
-                  {() => (
-                    <TextInput
-                      id="cpf"
-                      type="text"
-                      inputRef={ref}
-                      placeholder="111.111.111-11"
-                    />
-                  )}
-                </InputMask>
+                  customInput={TextInput}
+                  id="cpf"
+                  type="text"
+                  placeholder="111.111.111-11"
+                />
               )}
               rules={{
                 required: 'CPF não pode ficar vazio',
@@ -313,21 +309,17 @@ function Register() {
               control={control}
               name="pis"
               defaultValue=""
-              render={({ field: { value, onChange, ref } }: any) => (
-                <InputMask
-                  mask="999.9999.999-9"
+              render={({ field: { value, onChange } }: any) => (
+                <NumberFormat
+                  format="###.####.###-#"
+                  mask="_"
                   value={value}
                   onChange={onChange}
-                >
-                  {() => (
-                    <TextInput
-                      id="pis"
-                      type="text"
-                      inputRef={ref}
-                      placeholder="111.1111.111-1"
-                    />
-                  )}
-                </InputMask>
+                  customInput={TextInput}
+                  id="pis"
+                  type="text"
+                  placeholder="111.1111.111-1"
+                />
               )}
               rules={{
                 required: 'PIS não pode ficar vazio',
