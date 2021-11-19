@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
-import {FiArrowLeft} from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 
-export const StyledArrowIcon = styled(FiArrowLeft)`
+const StyledArrowIcon = styled(FiArrowLeft)`
   font-size: 1.3em;
 `;
+
+export default StyledArrowIcon;

@@ -1,16 +1,16 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 
-import { StyledArrowIcon } from './style';
+import StyledArrowIcon from './style';
 
-const BackButton = () => {
+function BackButton() {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(-1);
-  }
+  };
   return (
     <Button
       type="button"
@@ -20,9 +20,9 @@ const BackButton = () => {
       ariaLabel="Voltar"
       onClick={handleClick}
     >
-      <StyledArrowIcon/>
+      <StyledArrowIcon />
     </Button>
-  )
+  );
 }
 
-export default BackButton
+export default BackButton;

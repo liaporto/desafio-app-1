@@ -5,14 +5,14 @@ export const StyledFieldset = styled.fieldset`
   margin: 0;
   padding-left: 0;
   padding-right: 0;
-  
+
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  
+
   border: none;
 
-  @media(max-width: 540px){
+  @media (max-width: 540px) {
     flex-direction: column;
     align-items: center;
   }
@@ -24,4 +24,4 @@ export const StyledLegend = styled.legend`
   margin: 1.5em 0 1em;
 
   text-align: center;
-`
+`;

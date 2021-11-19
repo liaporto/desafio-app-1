@@ -1,11 +1,9 @@
 import React from 'react';
 
-import { StyledInput } from './style';
+import StyledInput from './style';
 
-const TextInput = (props:any) => {
-  return (
-    <StyledInput {...props} {...props.register}/>
-  )
+function TextInput({ register, ...props }: any) {
+  return <StyledInput {...props} {...register} />;
 }
 
-export default TextInput
+export default TextInput;

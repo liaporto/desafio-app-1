@@ -1,20 +1,24 @@
 import React from 'react';
 
-import {StyledSelect} from './style';
+import StyledSelect from './style';
 
-interface SelectProps{
+interface SelectProps {
   id: string;
   testId?: string;
-  selectOptions: Array<{value:string, label:string}>;
+  selectOptions: Array<{ value: string; label: string }>;
   register: {};
 }
 
-const Select = ({id, testId, selectOptions, register}:SelectProps) => {
+function Select({ id, testId, selectOptions, register }: SelectProps) {
   return (
-    <StyledSelect id={id} data-testid={testId ? testId : ""} {...register}>
-      {selectOptions.map((item, index) => <option key={index} value={item.value}>{item.label}</option>)}
+    <StyledSelect id={id} data-testid={testId || ''} {...register}>
+      {selectOptions.map((item) => (
+        <option key={`option_${item.label}`} value={item.value}>
+          {item.label}
+        </option>
+      ))}
     </StyledSelect>
-  )
+  );
 }
 
-export default Select
+export default Select;

@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import {StyledFieldset, StyledLegend} from './style';
+import { StyledFieldset, StyledLegend } from './style';
 
 interface FieldsetProps {
   legend?: string;
   children: any;
 }
 
-const Fieldset = ({legend, children}:FieldsetProps) => {
+function Fieldset({ legend, children }: FieldsetProps) {
   return (
     <StyledFieldset>
       {legend && <StyledLegend>{legend}</StyledLegend>}
       {children}
     </StyledFieldset>
-  )
+  );
 }
 
-export default Fieldset
+export default Fieldset;

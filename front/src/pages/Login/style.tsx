@@ -4,10 +4,10 @@ export const Container = styled.div`
   width: 60%;
   margin: auto auto 4em;
 
-  @media(max-width: 530px){
+  @media (max-width: 530px) {
     width: 85%;
   }
-`
+`;
 
 export const StyledLoginForm = styled.form`
   width: 100%;
@@ -20,4 +20,4 @@ export const RadioInputRow = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-`
+`;

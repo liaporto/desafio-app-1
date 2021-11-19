@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 interface FormControl {
-  width?: string
+  width?: string;
 }
 
 export const StyledFormControl = styled.div<FormControl>`
-  width: ${props => props.width === "half" ? '48%' : '100%'};
+  width: ${(props) => (props.width === 'half' ? '48%' : '100%')};
   margin-bottom: 2em;
-  
-  @media(max-width: 540px){
+
+  @media (max-width: 540px) {
     width: 100%;
   }
 `;
@@ -16,9 +16,9 @@ export const StyledFormControl = styled.div<FormControl>`
 export const StyledLabel = styled.label`
   display: inline-block;
   width: 100%;
-  margin-bottom: .2em;
+  margin-bottom: 0.2em;
 
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: 500;
   text-align: left;
-`
+`;
