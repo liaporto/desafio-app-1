@@ -4,18 +4,18 @@ import GlobalStyle from './globalStyle';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import AuthProvider from './contexts/auth';
+import { CookiesProvider } from "react-cookie";
 
-import {BrowserRouter} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyle />
-    <AuthProvider>
+    <CookiesProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </AuthProvider>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

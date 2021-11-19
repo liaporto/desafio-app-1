@@ -11,8 +11,10 @@ router.use("/private", passport.authenticate("jwt", { session: false }));
 router.get("/private/getDetails", AuthController.getDetails);
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
+router.get("/private/auth", AuthController.auth);
+router.put("/private/update", AuthController.update);
+router.delete("/private/remove", AuthController.remove);
 router.get("/logout", AuthController.logout);
-router.put("/update/:id", AuthController.update);
 
 // User-Routes
 router.get("/users", UserController.index);

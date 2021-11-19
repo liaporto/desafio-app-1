@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import {loginUser} from "../../services/UserService";
-import {AuthContext} from '../../contexts/auth';
+import { useCookies } from 'react-cookie';
 
 import InputMask from "react-input-mask";
 
@@ -24,16 +24,14 @@ const Login = () => {
   
   let navigate = useNavigate();
 
-  const Auth = useContext(AuthContext);
+  const [cookies, setCookie] = useCookies(["isSigned"]);
   
   const { register, handleSubmit, control, formState:{errors} } = useForm<LoginData>({mode:"onChange"});
 
   const [selectedLoginType, setSelectedLoginType] = useState("email");
 
-
   const redirectIfLoggedIn = () => {
-    const token = Auth.getToken();
-    if(token !== ""){
+    if(cookies.isSigned === "true"){
       navigate("/home");
     }
   }
@@ -44,12 +42,13 @@ const Login = () => {
   }
 
   const onSubmit = (data:LoginData) => {
-    loginUser(data).then(() => {
-      Auth.setToken(Auth.getToken());
+    loginUser(data).then((response) => {
+      setCookie("isSigned", "true", {
+            path: "/" });
       navigate("/home");
     }).catch(err => {
       console.log(err);
-      alert("Login inválido.");
+      alert(`Login inválido: ${err.message}`);
     });
   }
 
@@ -59,7 +58,7 @@ const Login = () => {
 
   useEffect(() => {
     redirectIfLoggedIn();
-  }, [Auth])
+  }, [])
 
   return (
     <main>
@@ -131,20 +130,19 @@ const Login = () => {
                   control={control}
                   name="loginId"
                   defaultValue=''
-                  render = {({field: {value, onChange, ref}}:any) => {
+                  render = {({field: {value, onChange}}:any) => {
                     return (
                       <InputMask
                         mask="999.999.999-99"
                         value={value}
                         onChange = {onChange}>
                         {() => <TextInput
-                                  data-testid="cpf_input"
-                                  id="loginId"
-                                  type="text"
-                                  aria-label="CPF"
-                                  inputRef={ref}
-                                  placeholder="111.111.111-11"
-                                />}
+                                data-testid="cpf_input"
+                                id="loginId"
+                                type="text"
+                                aria-label="CPF"
+                                placeholder="111.111.111-11"
+                              />}
                       </InputMask>
                     )
                   }}
@@ -162,7 +160,7 @@ const Login = () => {
                   control={control}
                   name="loginId"
                   defaultValue=''
-                  render = {({field: {value, onChange, ref}}:any) => {
+                  render = {({field: {value, onChange}}:any) => {
                     return (
                       <InputMask
                         mask="999.9999.999-9"
@@ -173,7 +171,6 @@ const Login = () => {
                                 id="loginId"
                                 type="text"
                                 aria-label="PIS"
-                                inputRef={ref}
                                 placeholder="111.1111.111-1"
                               />}
                       </InputMask>

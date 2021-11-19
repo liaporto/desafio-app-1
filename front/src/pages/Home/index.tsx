@@ -1,7 +1,8 @@
-import React, {useContext} from 'react'
+import React, {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom';
 
-import { AuthContext } from '../../contexts/auth';
+import {checkIfUserIsLogged, logoutUser} from "../../services/UserService";
+import { useCookies } from "react-cookie";
 
 import Button from '../../components/Button'
 
@@ -9,19 +10,34 @@ import { ButtonContainer } from './style'
 
 const Home = () => {
   
-  const Auth = useContext(AuthContext);
+  const [cookies, setCookie, removeCookie] = useCookies(["isSigned"]);
 
   let navigate = useNavigate();
   
   const handleLogOut = () => {
-    localStorage.removeItem("token");
-    Auth.setToken("");
-    navigate("/");
+    logoutUser().then(() => {
+      removeCookie("isSigned");
+      navigate("/");
+    }).catch(err => {
+      console.log(err);
+      window.alert("Erro ao deslogar usuário");
+    })
   }
 
   const handleGoToEditData = () => {
     navigate("/update");
   }
+
+  useEffect(() => {
+    checkIfUserIsLogged().then(() => {
+      console.log("Is logged!");
+    }).catch(err => {
+      console.log(err);
+      removeCookie("isSigned");
+      window.alert("Algo deu errado. Por favor faça login novamente.");
+      navigate("/");
+    });
+  }, []);
 
   return (
     <main>

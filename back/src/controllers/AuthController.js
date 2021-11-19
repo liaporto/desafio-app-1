@@ -46,7 +46,6 @@ const register = async (req, res) => {
       .json({
         message: "Usuário criado com sucesso!",
         user: user,
-        token: token,
       });
   } catch (err) {
     return res.status(500).json({ error: err });
@@ -84,9 +83,19 @@ const login = async (req, res) => {
   }
 };
 
+const auth = async (req, res) => {
+  try {
+    const token = req.cookies["token"];
+    if (!token) return res.status(401).json({ message: "Não autorizado" });
+    return res.status(200).json({ message: "Logado" });
+  } catch (err) {
+    return res.status(err.status).json({ err: err.message });
+  }
+};
+
 const getDetails = async (req, res) => {
   try {
-    const token = Auth.getToken(req);
+    const token = req.cookies["token"];
     if (!token) return res.status(401).json({ message: "Não autorizado." });
     const payload = Auth.decodeJwt(token);
     const user = await User.findByPk(payload.sub); //pegar_informação_do_usuário_logado
@@ -99,7 +108,11 @@ const getDetails = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { id } = req.params;
+  const token = req.cookies["token"];
+
+  if (!token) return res.status(401).json({ message: "Não autorizado." });
+  const payload = Auth.decodeJwt(token);
+  const id = payload.sub;
 
   try {
     const { password } = req.body;
@@ -123,34 +136,70 @@ const update = async (req, res) => {
       newUserData.hash = hashAndSalt.hash;
     }
 
-    const [updated] = await User.update(newUserData, { where: { id: id } });
+    const [updated] = await User.update(newUserData, {
+      where: { id: id },
+    });
+
     if (updated) {
       const user = await User.findByPk(id);
-      return res.status(200).send(user);
+      return res
+        .status(200)
+        .send({ user: user, message: "Usuário atualizado." });
+    } else {
+      return res.status(404).json({ message: "Usuário não encontrado." });
     }
-    throw new Error();
   } catch (err) {
-    res.status(500).json("Usuário não encontrado.");
+    res.status(err.status).json({ message: err.message });
+    return;
+  }
+};
+
+const remove = async (req, res) => {
+  const token = req.cookies["token"];
+  if (!token) return res.status(401).json({ message: "Não autorizado." });
+  const payload = Auth.decodeJwt(token);
+  const id = payload.sub;
+
+  try {
+    User.destroy({ where: { id: id } })
+      .then(() => {
+        return res
+          .clearCookie("token")
+          .status(200)
+          .json({ message: "Usuário deletado com sucesso." });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      });
+  } catch (err) {
+    res.status(err.status || 500).json({ message: err.message });
     return;
   }
 };
 
 const logout = async (req, res) => {
-  if (req.cookies["token"]) {
-    res.clearCookie("token").status(200).json({
-      message: "Você foi deslogado",
-    });
-  } else {
-    res.status(401).json({
-      error: "Token inválido",
-    });
+  try {
+    if (req.cookies["token"]) {
+      return res.clearCookie("token").status(200).json({
+        message: "Você foi deslogado",
+      });
+    } else {
+      return res.status(404).json({
+        message: "Token não encontrado",
+      });
+    }
+  } catch (err) {
+    return res.status(err.status).json({ message: err.message });
   }
 };
 
 module.exports = {
   register,
   login,
+  auth,
   getDetails,
   update,
+  remove,
   logout,
 };

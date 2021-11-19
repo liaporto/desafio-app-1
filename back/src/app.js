@@ -12,7 +12,16 @@ const passport = require("passport");
 require("./middlewares/jwtPassport")(passport);
 app.use(passport.initialize());
 
-app.use(cors());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", process.env.FRONT_END_URL);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
+app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -24,6 +33,6 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(
-    `${process.env.APP_NAME} app listening at http://localhost:${port}`
+    `${process.env.APP_NAME} app listening at ${process.env.APP_URL}`
   );
 });

@@ -1,16 +1,16 @@
-import React, {useContext} from 'react'
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import {AuthContext} from '../../contexts/auth';
+
+import {useCookies} from 'react-cookie';
 
 interface PrivateRouteProps {
   children: JSX.Element;
 }
 
 const PrivateRoute = ({children}:PrivateRouteProps) => {
-  const Auth = useContext(AuthContext);
-  const token = Auth.getToken();
+  const [cookies, setCookies] = useCookies();
 
-  return token !== ""
+  return cookies.isSigned === "true"
     ? children
     : <Navigate to="/" />;
 }

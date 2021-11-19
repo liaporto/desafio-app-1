@@ -2,8 +2,8 @@ import React, {useState, useEffect, useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 
+import {useCookies} from 'react-cookie';
 import {getUserDetails, updateUser, deleteUser} from "../../services/UserService";
-import {AuthContext} from '../../contexts/auth';
 
 import Fieldset from '../../components/Fieldset';
 import FormControl from '../../components/FormControl';
@@ -255,7 +255,7 @@ const EditData = ({setUserName}:any) => {
 
   let navigate = useNavigate();
 
-  const Auth = useContext(AuthContext);
+  const [cookies, setCookie, removeCookie] = useCookies(["isSigned"]);
 
   const [userData, setUserData] = useState<UserData>();
 
@@ -265,17 +265,15 @@ const EditData = ({setUserName}:any) => {
   const watchPassword = watch("password");
 
   const fetchUserData = async () => {
-    const userToken = Auth.getToken();
-    const responseData = await getUserDetails(userToken);
+    const responseData = await getUserDetails();
     return responseData;
   }
 
   const onSubmit = (data:FormData) => {
-    console.log(data);
     if(userData){
-      updateUser(userData.id, data).then(response => {
+      updateUser(data).then(response => {
         window.alert("Dados alterados com sucesso!");
-        setUserName(response.name);
+        setUserName(response.user.name);
       }).catch(err => {
         console.log(err);
         window.alert("Algo deu errado.");
@@ -286,11 +284,13 @@ const EditData = ({setUserName}:any) => {
   const handleDeleteUser = () => {
     if(userData){
       if(window.confirm("Tem certeza que deseja apagar o perfil?")){
-        deleteUser(userData.id).then(res => {
-          localStorage.removeItem("token");
-          Auth.setToken("");
+        deleteUser().then(() => {
           window.alert("Perfil apagado.");
+          removeCookie("isSigned");
           navigate("/");
+        }).catch(err => {
+          console.log(err);
+          window.alert("Erro ao apagar perfil.");
         })
       } else {
         console.log("Operação cancelada");
@@ -301,6 +301,11 @@ const EditData = ({setUserName}:any) => {
   useEffect(() => {
     fetchUserData().then((data) => {
       setUserData(data.user);
+    }).catch(err => {
+      console.log(err);
+      removeCookie("isSigned");
+      window.alert("Algo deu errado. Por favor faça login novamente.");
+      navigate("/");
     });
   }, []);
 

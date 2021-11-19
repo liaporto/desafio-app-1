@@ -1,23 +1,14 @@
-import React, {useContext} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import Button from '../Button';
-
-import { AuthContext } from '../../contexts/auth';
 
 import { StyledArrowIcon } from './style';
 
 const BackButton = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const Auth = useContext(AuthContext);
 
   const handleClick = () => {
-    if(location.pathname === "/home"){
-      localStorage.removeItem("token");
-      Auth.setToken("");
-    }
     navigate(-1);
   }
   return (

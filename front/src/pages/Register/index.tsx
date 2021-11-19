@@ -1,8 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 
-import {AuthContext} from '../../contexts/auth';
+import {registerUser} from "../../services/UserService";
+import { useCookies } from 'react-cookie';
 
 import InputMask from "react-input-mask";
 
@@ -13,8 +14,6 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 
 import {StyledRegisterForm} from './style';
-
-import {registerUser} from "../../services/UserService";
 
 interface FormData {
   cpf: string,
@@ -244,7 +243,7 @@ const Register = () => {
 
   let navigate = useNavigate();
 
-  const Auth = useContext(AuthContext);
+  const [cookies, setCookie] = useCookies(["isSigned"]);
 
   const { register, handleSubmit, watch, control, formState:{errors} } = useForm<FormData>({mode:"onChange"});
 
@@ -254,10 +253,12 @@ const Register = () => {
   const onSubmit = (data:FormData) => {
     delete data.confirmPassword;
     registerUser(data).then((responseData:any) => {
-      const token = localStorage.setItem("token", responseData.token);
-      Auth.setToken("Bearer " + token);
-      window.alert("Cadastro feito com sucesso!");
-      navigate("/home");
+      if(responseData){
+        setCookie("isSigned", "true", {
+          path: "/" });
+        window.alert("Cadastro feito com sucesso!");
+        navigate("/home");
+      }
     }).catch(err => {
       console.log(err);
       alert("Ocorreu um erro. Por favor tente novamente.");
