@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useCookies } from 'react-cookie';
 
-import InputMask from 'react-input-mask';
+import NumberFormat from 'react-number-format';
 import { loginUser } from '../../services/UserService';
 
 import { StyledLoginForm, Container, RadioInputRow } from './style';
@@ -63,17 +63,18 @@ function Login() {
           name="loginId"
           defaultValue=""
           render={({ field: { value, onChange } }: any) => (
-            <InputMask mask="999.999.999-99" value={value} onChange={onChange}>
-              {() => (
-                <TextInput
-                  data-testid="cpf_input"
-                  id="loginId"
-                  type="text"
-                  aria-label="CPF"
-                  placeholder="111.111.111-11"
-                />
-              )}
-            </InputMask>
+            <NumberFormat
+              format="###.###.###-##"
+              mask="_"
+              value={value}
+              onChange={onChange}
+              customInput={TextInput}
+              data-testid="cpf_input"
+              id="loginId"
+              type="text"
+              aria-label="CPF"
+              placeholder="111.111.111-11"
+            />
           )}
           rules={{
             required: 'Login não pode ficar vazio',
@@ -93,17 +94,18 @@ function Login() {
           name="loginId"
           defaultValue=""
           render={({ field: { value, onChange } }: any) => (
-            <InputMask mask="999.9999.999-9" value={value} onChange={onChange}>
-              {() => (
-                <TextInput
-                  data-testid="pis_input"
-                  id="loginId"
-                  type="text"
-                  aria-label="PIS"
-                  placeholder="111.1111.111-1"
-                />
-              )}
-            </InputMask>
+            <NumberFormat
+              format="###.####.###-#"
+              mask="_"
+              value={value}
+              onChange={onChange}
+              customInput={TextInput}
+              data-testid="pis_input"
+              id="loginId"
+              type="text"
+              aria-label="PIS"
+              placeholder="111.1111.111-1"
+            />
           )}
           rules={{
             required: 'Login não pode ficar vazio',
