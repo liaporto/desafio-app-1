@@ -7,7 +7,8 @@
     "dev": "node-dev --no-notify src/app.js",
     "migrate": "node src/database/migrate.js",
     "keys": "node src/config/generateRSAKeyPair.js",
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "run": "yarn keys && yarn start"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
