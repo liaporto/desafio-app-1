@@ -6,7 +6,12 @@ const sequelize =
         dialect: "sqlite",
         storage: process.env.DB_HOST + process.env.DB_DATABASE,
       })
-    : new Sequelize(process.env.DATABASE_URL, {models: [__dirname + "/../models"]});
+    : new Sequelize(process.env.DATABASE_URL, {
+        dialectOptions: {
+          ssl: true,
+        },
+        models: [__dirname + "/../models"],
+      });
 module.exports = sequelize;
 
 require("../models/User");
