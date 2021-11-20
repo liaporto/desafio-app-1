@@ -1,6 +1,5 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-require("./config/dotenv")();
 require("./config/sequelize");
 
 const app = express();

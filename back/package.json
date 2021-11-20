@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "node-dev --no-notify src/app.js",
-    "migrate": "node src/database/migrate.js",
+    "migrate": "node -r dotenv/config src/database/migrate.js",
     "keys": "node src/config/generateRSAKeyPair.js",
-    "start": "node src/app.js",
+    "start": "node -r dotenv/config src/app.js",
     "launch": "yarn migrate && yarn keys && yarn start"
   },
   "devDependencies": {
