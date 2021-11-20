@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useCookies } from 'react-cookie';
+
+import NumberFormat from 'react-number-format';
 import {
   getUserDetails,
   updateUser,
@@ -267,6 +269,7 @@ function EditData({ setUserName }: any) {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm<FormData>({ mode: 'onChange' });
 
@@ -488,19 +491,28 @@ function EditData({ setUserName }: any) {
             htmlFor="postalCode"
             controlWidth="half"
           >
-            <TextInput
-              id="postalCode"
+            <Controller
+              control={control}
               name="postalCode"
-              type="text"
-              placeholder="22222-222"
               defaultValue=""
-              register={register('postalCode', {
+              render={({ field: { value, onChange } }: any) => (
+                <NumberFormat
+                  format="#####-###"
+                  mask="_"
+                  value={value}
+                  onChange={onChange}
+                  customInput={TextInput}
+                  id="postalCode"
+                  placeholder="22222-222"
+                />
+              )}
+              rules={{
                 required: 'CEP não pode ficar vazio',
                 pattern: {
-                  value: /^\d{5}-?\d{3}$/,
+                  value: /^\d{5}-?\d{3}$/i,
                   message: 'CEP inválido',
                 },
-              })}
+              }}
             />
             {errors.postalCode && <span>{errors.postalCode.message}</span>}
           </FormControl>

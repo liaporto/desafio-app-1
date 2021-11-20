@@ -459,19 +459,28 @@ function Register() {
             htmlFor="postalCode"
             controlWidth="half"
           >
-            <TextInput
-              id="postalCode"
+            <Controller
+              control={control}
               name="postalCode"
-              type="text"
-              placeholder="22222-222"
               defaultValue=""
-              register={register('postalCode', {
+              render={({ field: { value, onChange } }: any) => (
+                <NumberFormat
+                  format="#####-###"
+                  mask="_"
+                  value={value}
+                  onChange={onChange}
+                  customInput={TextInput}
+                  id="postalCode"
+                  placeholder="22222-222"
+                />
+              )}
+              rules={{
                 required: 'CEP não pode ficar vazio',
                 pattern: {
-                  value: /^\d{5}-?\d{3}$/,
+                  value: /^\d{5}-?\d{3}$/i,
                   message: 'CEP inválido',
                 },
-              })}
+              }}
             />
             {errors.postalCode && <span>{errors.postalCode.message}</span>}
           </FormControl>
