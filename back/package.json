@@ -7,8 +7,8 @@
     "dev": "node-dev --no-notify src/app.js",
     "migrate": "node -r dotenv/config src/database/migrate.js",
     "keys": "node src/config/generateRSAKeyPair.js",
-    "start": "node -r dotenv/config src/app.js",
-    "launch": "yarn migrate && yarn keys && yarn start"
+    "build-app": "yarn install && yarn migrate && yarn keys && cd ../front && yarn install && yarn build",
+    "serve": "node -r dotenv/config src/app.js"
   },
   "devDependencies": {
     "node-dev": "^7.1.0"

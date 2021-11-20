@@ -391,7 +391,7 @@ function Register() {
                   if (value !== watchPassword) {
                     return 'As senhas não estão iguais';
                   }
-                  return false;
+                  return true;
                 },
               })}
             />

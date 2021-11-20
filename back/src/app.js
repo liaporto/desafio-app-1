@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 require("./config/sequelize");
 
 const app = express();
@@ -26,8 +27,16 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
-app.get("/", (req, res) => {
+// Serve React files
+app.use(express.static(path.resolve(__dirname, "../../front/build")));
+
+app.get("/api", (req, res) => {
   res.send("Hello World!");
+});
+
+// Qualquer request que não seja para api vai renderizar o app React
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../../front/build", "index.html"));
 });
 
 app.listen(port, () => {

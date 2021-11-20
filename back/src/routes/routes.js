@@ -5,22 +5,22 @@ const passport = require("passport");
 
 const router = Router();
 
-router.use("/private", passport.authenticate("jwt", { session: false }));
+router.use("/api/private", passport.authenticate("jwt", { session: false }));
 
 // Auth-Routes
-router.get("/private/getDetails", AuthController.getDetails);
-router.post("/register", AuthController.register);
-router.post("/login", AuthController.login);
-router.get("/private/auth", AuthController.auth);
-router.put("/private/update", AuthController.update);
-router.delete("/private/remove", AuthController.remove);
-router.get("/logout", AuthController.logout);
+router.get("/api/private/getDetails", AuthController.getDetails);
+router.post("/api/register", AuthController.register);
+router.post("/api/login", AuthController.login);
+router.get("/api/private/auth", AuthController.auth);
+router.put("/api/private/update", AuthController.update);
+router.delete("/api/private/remove", AuthController.remove);
+router.get("/api/logout", AuthController.logout);
 
 // User-Routes
-router.get("/users", UserController.index);
-router.get("/users/:id", UserController.find);
-router.post("/users", UserController.create);
-router.put("/users/:id", UserController.update);
-router.delete("/users/:id", UserController.destroy);
+router.get("/api/users", UserController.index);
+router.get("/api/users/:id", UserController.find);
+router.post("/api/users", UserController.create);
+router.put("/api/users/:id", UserController.update);
+router.delete("/api/users/:id", UserController.destroy);
 
 module.exports = router;
