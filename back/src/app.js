@@ -13,6 +13,7 @@ require("./middlewares/jwtPassport")(passport);
 app.use(passport.initialize());
 
 app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", process.env.FRONT_END_URL);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -20,7 +21,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(cors({ credentials: true, origin: process.env.REACT_APP_URL }));
+app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
