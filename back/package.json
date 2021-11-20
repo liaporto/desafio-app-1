@@ -11,12 +11,12 @@
     "launch": "yarn migrate && yarn keys && yarn start"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "node-dev": "^7.1.0",
     "sequelize": "^6.9.0"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
