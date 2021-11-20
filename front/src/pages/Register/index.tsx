@@ -523,7 +523,12 @@ function Register() {
             )}
           </FormControl>
         </Fieldset>
-        <Button width="full" type="submit" styleType="solid" mainColor="primary">
+        <Button
+          width="full"
+          type="submit"
+          styleType="solid"
+          mainColor="primary"
+        >
           Concluir cadastro
         </Button>
       </StyledRegisterForm>
