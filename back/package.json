@@ -7,7 +7,7 @@
     "dev": "node-dev --no-notify src/app.js",
     "migrate": "node -r dotenv/config src/database/migrate.js",
     "keys": "node src/config/generateRSAKeyPair.js",
-    "build-app": "yarn install && yarn migrate && yarn keys && cd ../front && yarn install && yarn build",
+    "build": "yarn install && yarn migrate && yarn keys && cd ../front && yarn install && yarn build",
     "serve": "node -r dotenv/config src/app.js"
   },
   "devDependencies": {
